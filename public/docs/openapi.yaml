@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: 'Prince Hardware API'
+  description: 'API for Prince Hardware Store customer registration for reward cards'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://127.0.0.1:8000'
+paths:
+  /api/auth/login:
+    post:
+      summary: Login
+      operationId: login
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Authentication Controller'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: mona06@example.com
+                password:
+                  type: string
+                  description: ''
+                  example: 'Z1ACIN?q^tNVC+'
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/register:
+    post:
+      summary: Register
+      operationId: register
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Authentication Controller'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: rdjxixtgzw
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: heath.reilly@example.org
+                password:
+                  type: string
+                  description: ''
+                  example: enim
+                password_confirmation:
+                  type: string
+                  description: ''
+                  example: sit
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+      security: []
+  /api/auth/refresh:
+    post:
+      summary: 'Refresh Token'
+      operationId: refreshToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Authentication Controller'
+  /api/auth/logout:
+    delete:
+      summary: Logout
+      operationId: logout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'Authentication Controller'
+  /sanctum/csrf-cookie:
+    get:
+      summary: 'Return an empty response simply to trigger the storage of the CSRF cookie in the browser.'
+      operationId: returnAnEmptyResponseSimplyToTriggerTheStorageOfTheCSRFCookieInTheBrowser
+      description: ''
+      parameters: []
+      responses:
+        204:
+          description: ''
+      tags:
+        - Endpoints
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+tags:
+  -
+    name: 'Authentication Controller'
+    description: ''
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
