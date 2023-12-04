@@ -23,15 +23,15 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->validate([
-            'username' => ['required', 'string'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('username', $credentials['username'])->first();
+        $user = User::where('email', $credentials['email'])->first();
 
         if (!$user)
             throw ValidationException::withMessages([
-                'username' => ['Username does not exist'],
+                'email' => ['Email is not registered'],
             ]);
 
         if (! $jwtToken = auth()->attempt($credentials))
