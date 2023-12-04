@@ -31,3 +31,7 @@ Route::group([
         Route::delete('/logout', 'logout');
     });
 });
+
+Route::middleware('auth:api')->group(function() {
+    // Place 
+});
