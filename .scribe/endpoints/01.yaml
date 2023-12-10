@@ -24,9 +24,9 @@ endpoints:
     bodyParameters:
       email:
         name: email
-        description: 'Must be a valid email address.'
+        description: ''
         required: true
-        example: mona06@example.com
+        example: chanel14@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -35,14 +35,14 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: 'Z1ACIN?q^tNVC+'
+        example: '/O^Fy54-b/9K.D]!'
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      email: mona06@example.com
-      password: 'Z1ACIN?q^tNVC+'
+      email: chanel14@example.org
+      password: '/O^Fy54-b/9K.D]!'
     fileParameters: []
     responses: []
     responseFields: []
@@ -65,55 +65,79 @@ endpoints:
       authenticated: false
       custom: []
     headers:
-      Content-Type: application/json
+      Content-Type: multipart/form-data
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      name:
-        name: name
+      full_name:
+        name: full_name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: rdjxixtgzw
+        example: rwniyqt
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      date_of_birth:
+        name: date_of_birth
+        description: 'Must be a valid date.'
+        required: true
+        example: '2023-12-08T22:01:49'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      address:
+        name: address
+        description: ''
+        required: true
+        example: officiis
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
       email:
         name: email
-        description: 'Must be a valid email address. Must not be greater than 255 characters.'
+        description: 'Must be a valid email address.'
         required: true
-        example: heath.reilly@example.org
+        example: mgibson@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
         custom: []
-      password:
-        name: password
+      phone_number:
+        name: phone_number
         description: ''
         required: true
-        example: enim
+        example: |-
+          '+63-910-123-4567'
+          d
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         custom: []
-      password_confirmation:
-        name: password_confirmation
-        description: ''
+      signature:
+        name: signature
+        description: 'Must be an image.'
         required: true
-        example: sit
-        type: string
+        example: null
+        type: file
         enumValues: []
         exampleWasSpecified: false
         custom: []
     cleanBodyParameters:
-      name: rdjxixtgzw
-      email: heath.reilly@example.org
-      password: enim
-      password_confirmation: sit
-    fileParameters: []
+      full_name: rwniyqt
+      date_of_birth: '2023-12-08T22:01:49'
+      address: officiis
+      email: mgibson@example.com
+      phone_number: |-
+        '+63-910-123-4567'
+        d
+    fileParameters:
+      signature: null
     responses: []
     responseFields: []
     auth: []
@@ -150,7 +174,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer dZk5bEfaVe68Pgchv4631aD'
+      - 'Bearer avdEZ84ckD6hefb5P1ga3V6'
     controller: null
     method: null
     route: null
@@ -184,7 +208,7 @@ endpoints:
     auth:
       - headers
       - Authorization
-      - 'Bearer hcVdgPEfa1k6vb6a8Ze4D53'
+      - 'Bearer Pf64hZc5Dkgdba81a6V3veE'
     controller: null
     method: null
     route: null

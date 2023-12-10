@@ -107,7 +107,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: December 3, 2023</li>
+        <li>Last updated: December 8, 2023</li>
     </ul>
 </div>
 
@@ -149,8 +149,8 @@ You can switch the language used with the tabs at the top right (or from the nav
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"mona06@example.com\",
-    \"password\": \"Z1ACIN?q^tNVC+\"
+    \"email\": \"chanel14@example.org\",
+    \"password\": \"\\/O^Fy54-b\\/9K.D]!\"
 }"
 </code></pre></div>
 
@@ -166,8 +166,8 @@ const headers = {
 };
 
 let body = {
-    "email": "mona06@example.com",
-    "password": "Z1ACIN?q^tNVC+"
+    "email": "chanel14@example.org",
+    "password": "\/O^Fy54-b\/9K.D]!"
 };
 
 fetch(url, {
@@ -256,10 +256,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-auth-login"
-               value="mona06@example.com"
+               value="chanel14@example.org"
                data-component="body">
     <br>
-<p>Must be a valid email address. Example: <code>mona06@example.com</code></p>
+<p>Example: <code>chanel14@example.org</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -267,10 +267,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-auth-login"
-               value="Z1ACIN?q^tNVC+"
+               value="/O^Fy54-b/9K.D]!"
                data-component="body">
     <br>
-<p>Example: <code>Z1ACIN?q^tNVC+</code></p>
+<p>Example: <code>/O^Fy54-b/9K.D]!</code></p>
         </div>
         </form>
 
@@ -288,15 +288,15 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <div class="bash-example">
     <pre><code class="language-bash">curl --request POST \
     "http://127.0.0.1:8000/api/auth/register" \
-    --header "Content-Type: application/json" \
+    --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --data "{
-    \"name\": \"rdjxixtgzw\",
-    \"email\": \"heath.reilly@example.org\",
-    \"password\": \"enim\",
-    \"password_confirmation\": \"sit\"
-}"
-</code></pre></div>
+    --form "full_name=rwniyqt"\
+    --form "date_of_birth=2023-12-08T22:01:49"\
+    --form "address=officiis"\
+    --form "email=mgibson@example.com"\
+    --form "phone_number='+63-910-123-4567'
+d"\
+    --form "signature=@C:\Users\RhysBarriga\AppData\Local\Temp\php99B3.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -305,21 +305,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
 );
 
 const headers = {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
 
-let body = {
-    "name": "rdjxixtgzw",
-    "email": "heath.reilly@example.org",
-    "password": "enim",
-    "password_confirmation": "sit"
-};
+const body = new FormData();
+body.append('full_name', 'rwniyqt');
+body.append('date_of_birth', '2023-12-08T22:01:49');
+body.append('address', 'officiis');
+body.append('email', 'mgibson@example.com');
+body.append('phone_number', ''+63-910-123-4567'
+d');
+body.append('signature', document.querySelector('input[name="signature"]').files[0]);
 
 fetch(url, {
     method: "POST",
     headers,
-    body: JSON.stringify(body),
+    body,
 }).then(response =&gt; response.json());</code></pre></div>
 
 </span>
@@ -344,7 +346,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <form id="form-POSTapi-auth-register" data-method="POST"
       data-path="api/auth/register"
       data-authed="0"
-      data-hasfiles="0"
+      data-hasfiles="1"
       data-isarraybody="0"
       autocomplete="off"
       onsubmit="event.preventDefault(); executeTryOut('POSTapi-auth-register', this);">
@@ -379,10 +381,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="Content-Type"                data-endpoint="POSTapi-auth-register"
-               value="application/json"
+               value="multipart/form-data"
                data-component="header">
     <br>
-<p>Example: <code>application/json</code></p>
+<p>Example: <code>multipart/form-data</code></p>
             </div>
                                 <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
@@ -397,15 +399,37 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
         <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>full_name</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="name"                data-endpoint="POSTapi-auth-register"
-               value="rdjxixtgzw"
+                              name="full_name"                data-endpoint="POSTapi-auth-register"
+               value="rwniyqt"
                data-component="body">
     <br>
-<p>Must not be greater than 255 characters. Example: <code>rdjxixtgzw</code></p>
+<p>Must not be greater than 255 characters. Example: <code>rwniyqt</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>date_of_birth</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="date_of_birth"                data-endpoint="POSTapi-auth-register"
+               value="2023-12-08T22:01:49"
+               data-component="body">
+    <br>
+<p>Must be a valid date. Example: <code>2023-12-08T22:01:49</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>address</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="address"                data-endpoint="POSTapi-auth-register"
+               value="officiis"
+               data-component="body">
+    <br>
+<p>Example: <code>officiis</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -413,32 +437,33 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-auth-register"
-               value="heath.reilly@example.org"
+               value="mgibson@example.com"
                data-component="body">
     <br>
-<p>Must be a valid email address. Must not be greater than 255 characters. Example: <code>heath.reilly@example.org</code></p>
+<p>Must be a valid email address. Example: <code>mgibson@example.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
+            <b style="line-height: 2;"><code>phone_number</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="password"                data-endpoint="POSTapi-auth-register"
-               value="enim"
+                              name="phone_number"                data-endpoint="POSTapi-auth-register"
+               value="'+63-910-123-4567'
+d"
                data-component="body">
     <br>
-<p>Example: <code>enim</code></p>
+<p>Example: <code>'+63-910-123-4567' d</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>password_confirmation</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
+            <b style="line-height: 2;"><code>signature</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
  &nbsp;
-                <input type="text" style="display: none"
-                              name="password_confirmation"                data-endpoint="POSTapi-auth-register"
-               value="sit"
+                <input type="file" style="display: none"
+                              name="signature"                data-endpoint="POSTapi-auth-register"
+               value=""
                data-component="body">
     <br>
-<p>Example: <code>sit</code></p>
+<p>Must be an image. Example: <code>C:\Users\RhysBarriga\AppData\Local\Temp\php99B3.tmp</code></p>
         </div>
         </form>
 
@@ -738,7 +763,7 @@ fetch(url, {
             </summary>
             <pre><code class="language-http">cache-control: no-cache, private
 access-control-allow-origin: *
-set-cookie: XSRF-TOKEN=eyJpdiI6ImNCZVlsLzZKTHBBbmZNaDhXeW9rL0E9PSIsInZhbHVlIjoiT2lTVkt3OVhyNmFXMnpYWUpwNmhTVFVRdzhtZk1ucFJHUWxSQ0tBVitmZS9MMm95MTVmbWtKaExnTVltTEpGQmN5Qk5RR1BQdGQ1QVR2YnVwS0p1NjlYL3V4RnNIV1ZZZW9INjl0QUtXWFRac0Vzb0VvTFV3aEl2K1gyR2dyYVIiLCJtYWMiOiJmZDY2MmRkYzVlYTc5MjJiZWY2ZWNlYjBkYjdjZjk3MzM3MjlhZTk1ZjUyZjM0OTJkODMyNDFiMWM5MTE4OTMyIiwidGFnIjoiIn0%3D; expires=Sun, 03 Dec 2023 15:12:26 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6IkY0MlNQZVZCWGs4cldjVnBzejFmWWc9PSIsInZhbHVlIjoiamx3NERTWlJmYVhnM2tmVU5lT0wrK0N6Z2VjK0NROUJxSndnaFFpVE1SRE5xeWJneHF6bVVzdCtqSW5NdUNpeHBQMy8vVGtQaHJMRkRRV0x3MkJXR21sQXJRVE1LMk9PdkVGRDFCUjJzbTlkbWs2L0RkN2Jnd0RaV3o0SEprY3ciLCJtYWMiOiJjNTBiNTYwYmVmNDNjM2QyMGVjYWY4OWQ2MmU0MTZhMDI0YTU5YTYxMWU2YWZhYjA3MTlhZjI2YzE1NzZjYjAzIiwidGFnIjoiIn0%3D; expires=Sun, 03 Dec 2023 15:12:26 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+set-cookie: XSRF-TOKEN=eyJpdiI6Inorcmg4SzJSdmhMZ2JQZ2lJTCs2N3c9PSIsInZhbHVlIjoiWDFabzVUQ0pxNUg3dUxmNFNETlVwNTRoSnBtQzQwMm1FT0wwR3dCUVFxYmRpTW9HN2h0SmdvTnVoRGZ0NHVqa0hFUzlkK04xOHpzRHo4Y3pDb2NNenlyNVNRK1FwK1ZkWmtTckE5U1Q3OXg3R3hrbmpGWUliL2pTYkVMdDREMTYiLCJtYWMiOiI4ZjI2ZGQ2YmQwZTMyMzhmMDRmYmVhNWZmNzQzZTUyNzg4MDc1MmE5MWRiMjNkY2M1OWM4NTk3ZDhjMGY3MThiIiwidGFnIjoiIn0%3D; expires=Sat, 09 Dec 2023 00:01:47 GMT; Max-Age=7200; path=/; samesite=lax; laravel_session=eyJpdiI6ImJaYnpZWS9wRDk3QXBaQnB3MFFEZnc9PSIsInZhbHVlIjoiN284a29PSDlMaktKK0UrZTg4dnFWVWxqb1Izb3hLckRDQy94Y2ZKM2p1MVg2ODRZdkRtTVJLdmdxUlduUzlQK2UwUDZvdEpSYmhIbmtLOFVNZkhNZVcxV0tMZjl4enFTZWY3K1granRDbllPZUpaRGZ5NVdKRFE1bU5nanpVb2MiLCJtYWMiOiIxZGE0MWE5MDIxNGI1YWMzOWQzNGEwM2NhYzlhNWE3YmU2YjU4NzliNzU5ZmYzMTQ2OTQ1NzlmNzIzZGMxODljIiwidGFnIjoiIn0%3D; expires=Sat, 09 Dec 2023 00:01:47 GMT; Max-Age=7200; path=/; httponly; samesite=lax
  </code></pre></details>         <pre>
 <code>Empty response</code>
  </pre>

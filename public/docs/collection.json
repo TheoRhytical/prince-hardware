@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Prince Hardware API",
-        "_postman_id": "bfc1c4f1-9e47-4648-8ac0-9848acf3ea7c",
+        "_postman_id": "8df49224-63af-4a19-a662-dc9f757f9253",
         "description": "API for Prince Hardware Store customer registration for reward cards",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -41,7 +41,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"mona06@example.com\",\"password\":\"Z1ACIN?q^tNVC+\"}"
+                            "raw": "{\"email\":\"chanel14@example.org\",\"password\":\"\\\/O^Fy54-b\\\/9K.D]!\"}"
                         },
                         "description": "",
                         "auth": {
@@ -63,7 +63,7 @@
                         "header": [
                             {
                                 "key": "Content-Type",
-                                "value": "application\/json"
+                                "value": "multipart\/form-data"
                             },
                             {
                                 "key": "Accept",
@@ -71,8 +71,44 @@
                             }
                         ],
                         "body": {
-                            "mode": "raw",
-                            "raw": "{\"name\":\"rdjxixtgzw\",\"email\":\"heath.reilly@example.org\",\"password\":\"enim\",\"password_confirmation\":\"sit\"}"
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "full_name",
+                                    "value": "rwniyqt",
+                                    "type": "text",
+                                    "description": "Must not be greater than 255 characters."
+                                },
+                                {
+                                    "key": "date_of_birth",
+                                    "value": "2023-12-08T22:01:49",
+                                    "type": "text",
+                                    "description": "Must be a valid date."
+                                },
+                                {
+                                    "key": "address",
+                                    "value": "officiis",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "email",
+                                    "value": "mgibson@example.com",
+                                    "type": "text",
+                                    "description": "Must be a valid email address."
+                                },
+                                {
+                                    "key": "phone_number",
+                                    "value": "'+63-910-123-4567'\nd",
+                                    "type": "text",
+                                    "description": ""
+                                },
+                                {
+                                    "key": "signature",
+                                    "src": [],
+                                    "type": "file"
+                                }
+                            ]
                         },
                         "description": "",
                         "auth": {
@@ -173,7 +209,7 @@
                                 },
                                 {
                                     "key": "set-cookie",
-                                    "value": "XSRF-TOKEN=eyJpdiI6ImNCZVlsLzZKTHBBbmZNaDhXeW9rL0E9PSIsInZhbHVlIjoiT2lTVkt3OVhyNmFXMnpYWUpwNmhTVFVRdzhtZk1ucFJHUWxSQ0tBVitmZS9MMm95MTVmbWtKaExnTVltTEpGQmN5Qk5RR1BQdGQ1QVR2YnVwS0p1NjlYL3V4RnNIV1ZZZW9INjl0QUtXWFRac0Vzb0VvTFV3aEl2K1gyR2dyYVIiLCJtYWMiOiJmZDY2MmRkYzVlYTc5MjJiZWY2ZWNlYjBkYjdjZjk3MzM3MjlhZTk1ZjUyZjM0OTJkODMyNDFiMWM5MTE4OTMyIiwidGFnIjoiIn0%3D; expires=Sun, 03 Dec 2023 15:12:26 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6IkY0MlNQZVZCWGs4cldjVnBzejFmWWc9PSIsInZhbHVlIjoiamx3NERTWlJmYVhnM2tmVU5lT0wrK0N6Z2VjK0NROUJxSndnaFFpVE1SRE5xeWJneHF6bVVzdCtqSW5NdUNpeHBQMy8vVGtQaHJMRkRRV0x3MkJXR21sQXJRVE1LMk9PdkVGRDFCUjJzbTlkbWs2L0RkN2Jnd0RaV3o0SEprY3ciLCJtYWMiOiJjNTBiNTYwYmVmNDNjM2QyMGVjYWY4OWQ2MmU0MTZhMDI0YTU5YTYxMWU2YWZhYjA3MTlhZjI2YzE1NzZjYjAzIiwidGFnIjoiIn0%3D; expires=Sun, 03 Dec 2023 15:12:26 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
+                                    "value": "XSRF-TOKEN=eyJpdiI6Inorcmg4SzJSdmhMZ2JQZ2lJTCs2N3c9PSIsInZhbHVlIjoiWDFabzVUQ0pxNUg3dUxmNFNETlVwNTRoSnBtQzQwMm1FT0wwR3dCUVFxYmRpTW9HN2h0SmdvTnVoRGZ0NHVqa0hFUzlkK04xOHpzRHo4Y3pDb2NNenlyNVNRK1FwK1ZkWmtTckE5U1Q3OXg3R3hrbmpGWUliL2pTYkVMdDREMTYiLCJtYWMiOiI4ZjI2ZGQ2YmQwZTMyMzhmMDRmYmVhNWZmNzQzZTUyNzg4MDc1MmE5MWRiMjNkY2M1OWM4NTk3ZDhjMGY3MThiIiwidGFnIjoiIn0%3D; expires=Sat, 09 Dec 2023 00:01:47 GMT; Max-Age=7200; path=\/; samesite=lax; laravel_session=eyJpdiI6ImJaYnpZWS9wRDk3QXBaQnB3MFFEZnc9PSIsInZhbHVlIjoiN284a29PSDlMaktKK0UrZTg4dnFWVWxqb1Izb3hLckRDQy94Y2ZKM2p1MVg2ODRZdkRtTVJLdmdxUlduUzlQK2UwUDZvdEpSYmhIbmtLOFVNZkhNZVcxV0tMZjl4enFTZWY3K1granRDbllPZUpaRGZ5NVdKRFE1bU5nanpVb2MiLCJtYWMiOiIxZGE0MWE5MDIxNGI1YWMzOWQzNGEwM2NhYzlhNWE3YmU2YjU4NzliNzU5ZmYzMTQ2OTQ1NzlmNzIzZGMxODljIiwidGFnIjoiIn0%3D; expires=Sat, 09 Dec 2023 00:01:47 GMT; Max-Age=7200; path=\/; httponly; samesite=lax"
                                 }
                             ],
                             "code": 204,

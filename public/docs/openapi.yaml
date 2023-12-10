@@ -25,12 +25,12 @@ paths:
               properties:
                 email:
                   type: string
-                  description: 'Must be a valid email address.'
-                  example: mona06@example.com
+                  description: ''
+                  example: chanel14@example.org
                 password:
                   type: string
                   description: ''
-                  example: 'Z1ACIN?q^tNVC+'
+                  example: '/O^Fy54-b/9K.D]!'
               required:
                 - email
                 - password
@@ -47,31 +47,41 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                name:
+                full_name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: rdjxixtgzw
+                  example: rwniyqt
+                date_of_birth:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-12-08T22:01:49'
+                address:
+                  type: string
+                  description: ''
+                  example: officiis
                 email:
                   type: string
-                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: heath.reilly@example.org
-                password:
+                  description: 'Must be a valid email address.'
+                  example: mgibson@example.com
+                phone_number:
                   type: string
                   description: ''
-                  example: enim
-                password_confirmation:
+                  example: "'+63-910-123-4567'\nd"
+                signature:
                   type: string
-                  description: ''
-                  example: sit
+                  format: binary
+                  description: 'Must be an image.'
               required:
-                - name
+                - full_name
+                - date_of_birth
+                - address
                 - email
-                - password
-                - password_confirmation
+                - phone_number
+                - signature
       security: []
   /api/auth/refresh:
     post:
