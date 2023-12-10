@@ -10,6 +10,15 @@ class Customer extends Model
     use HasFactory;
 
     /**
+    * The attributes that aren't mass assignable.
+    *
+    * @var array
+    */
+    protected $guarded = [
+        'id'
+    ];
+
+    /**
      * @var int
      */
     public static $addressMaxLength = 512;
