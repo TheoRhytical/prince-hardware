@@ -44,7 +44,8 @@ Storage Setup
 php artisan storage:link
 ```
 
-Run application
+Run application (run the commands in two separate terminals)
 ```
 php artisan serve
+npm run dev
 ```
