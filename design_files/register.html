@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Registration Page</title>
+	<link rel="stylesheet" href="css/mystyle.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+</head>
+<body>
+	<div id="col-12" class="header" style="">
+		<div id="col-6">
+			<a id="hamburger-icon" href="#" class="open-close-btn">
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			</a>
+			<div id="myNav" class="overlay">
+				<a href="index.html"><img src="icon/home.png" style="" class="nav-head"></a>
+				<div class="nav-a-content">
+					<a href="login.html" class="nav-link">Login</a><!---->
+					<a href="promo.html" class="nav-link">Promos</a>
+					<!-- <h2 class="accordion">Promos</h2>
+			            <div class="accordion-panel">
+			              <a href=""><p class="panel-ac-p1">1</p></a>
+			              <a href=""><p class="panel-ac-p2">2</p></a>
+			              <a href=""><p class="panel-ac-p2">3</p></a>
+			            </div> -->
+			        <a href="loyalty-card.html" class="nav-link">Loyalty Card</a>
+			        <a href="about.html" class="nav-link">About Us</a>
+					<a href="contact.html" class="nav-link">Contact Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="body-container">
+	<div class="text-container">
+		<h2 class="text-center">PRINCE CARD REGISTRATION FORM</h2>
+		<h4 class="text-center">Please provide the following information to complete your registration.</h4>
+	</div>
+	<div class="form-container">	
+		<form class="reg-form" id="registrationForm" action="#" method="post" enctype="multipart/form-data">
+			<h3 class="text-center">Personal Information</h3>
+
+		    <label for="fullName">Full Name:</label>
+		    <input type="text" id="fullName" name="fullName" required>
+
+		    <label for="dob">Date of Birth:</label>
+		    <input type="date" id="dob" name="dob" required>
+
+		    <label for="address">Address:</label>
+		    <textarea id="address" name="address" rows="4" required></textarea>
+
+		    <label for="email">Email:</label>
+		    <input type="email" id="email" name="email" placeholder="(Optional)">
+
+		    <label for="phone">Phone Number:</label>
+		    <input type="tel" id="phone" name="phone" required>
+
+		  	<label for="password">Password:</label>
+			<div class="password-container">
+			    <input type="password" id="password" name="password" required>
+		
+			</div>
+
+			<label for="confirmpass">Confirm Password:</label>
+			<div class="password-container">
+			    <input type="password" id="confirmpass" name="confirmpass" required>
+			    <i class="toggle-password fas fa-eye" onclick="togglePasswordVisibility()"></i>
+			</div>
+
+		    <label for="signature">Signature:</label>
+		    <input type="file" id="signature" name="signature" accept="image/*" required>
+		    <img id="signaturePreview" alt="Signature Preview">
+
+		    <button type="submit" onclick="showConfirmation()">Submit</button>
+		    <button type="button" class="cancel">Cancel</button>
+
+		    <p>A copy of the response will be emailed to the address provided.</p>
+		</form>
+	</div>
+	  <!-- Modal Overlay -->
+   <div id="confirmationModal" class="alert-overlay">
+    <div class="alert-content">
+      <p>Congratulations! Your Prince Card registration is complete.</p>
+      <button class="btn btn-success" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+<script>
+    document.getElementById('signature').addEventListener('change', function () {
+        const preview = document.getElementById('signaturePreview');
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+     function showConfirmation() {
+  // Show the modal overlay
+  document.getElementById('confirmationModal').style.display = 'flex';
+
+  // Close the modal automatically after 5 seconds
+  setTimeout(function () {
+    closeModal();
+  }, 5000);
+}
+
+function closeModal() {
+  // Hide the modal overlay
+  document.getElementById('confirmationModal').style.display = 'none';
+}
+
+</script>
+
+
+<script type="text/javascript">
+  /* Open Menu */
+  $( ".open-close-btn" ).on('click touchstart', function(e) {
+    // prevent default anchor click 
+    e.preventDefault();
+    $(".overlay").toggleClass("overlay-open");
+    $("#hamburger-icon").toggleClass("hamburger-open");
+  });
+</script>
+
+<script type="text/javascript">
+$(window).on("scroll", function() {
+    if($(window).scrollTop() > 50) {
+        $(".header").addClass("active");
+    } else {
+       $(".header").removeClass("active");
+    }
+});
+</script>
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        var confirmPassField = document.getElementById("confirmpass");
+        var toggleIcons = document.querySelectorAll(".toggle-password");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            confirmPassField.type = "text";
+            toggleIcons.forEach(function(icon) {
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            });
+        } else {
+            passwordField.type = "password";
+            confirmPassField.type = "password";
+            toggleIcons.forEach(function(icon) {
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            });
+        }
+    }
+</script>
+</body>
+</html>
