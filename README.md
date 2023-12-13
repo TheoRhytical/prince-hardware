@@ -27,6 +27,7 @@ Make sure DB is SQLite
 
 Run the following commands
 ```
+cp .env.example .env
 composer install
 php artisan key:generate --ansi // if this is not run automatically
 php artisan jwt:secret
