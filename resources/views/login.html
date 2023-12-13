@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Login Page</title>
+	<link rel="stylesheet" href="css/mystyle.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<script src="js/jquery-3.2.1.slim.min.js"></script>
+	<script src="js/popper.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+</head>
+<body style="font-family: 'Varela Round', sans-serif;">
+	<div id="col-12" class="header" style="">
+		<div id="col-6">
+			<a id="hamburger-icon" href="#" class="open-close-btn">
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			  <span></span>
+			</a>
+			<div id="myNav" class="overlay">
+				<a href="index.html"><img src="icon/home.png" style="" class="nav-head"></a>
+				<div class="nav-a-content">
+					<a href="login.html" class="nav-link">Login</a><!---->
+					<a href="promo.html" class="nav-link">Promos</a>
+					<!-- <h2 class="accordion">Promos</h2>
+			            <div class="accordion-panel">
+			              <a href=""><p class="panel-ac-p1">1</p></a>
+			              <a href=""><p class="panel-ac-p2">2</p></a>
+			              <a href=""><p class="panel-ac-p2">3</p></a>
+			            </div> -->
+			        <a href="loyalty-card.html" class="nav-link">Loyalty Card</a>
+			        <a href="about.html" class="nav-link">About Us</a>
+					<a href="contact.html" class="nav-link">Contact Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</head>
+<body>
+
+<div class="login-container">
+  <h1 class="text-center" style="color: white;">Welcome to Online Prince Card Registration</h1>
+  <div class="login-form">
+    <h2 class="text-center" style="color: white;">Login</h2>
+    <form>
+      <div class="form-group">
+        <label for="text">Phone Number or Email</label>
+        <input type="text" class="form-control" id="text" placeholder="Enter your number or email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="password" placeholder="Enter your password">
+          <div class="input-group-append">
+            <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
+              <i class="fas fa-eye"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      <a href="">Forgot Password?</a>
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">Remember me</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function togglePassword() {
+    const passwordInput = $('#password');
+    const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+    passwordInput.attr('type', type);
+    const eyeIcon = $('.bi-eye');
+    eyeIcon.toggleClass('bi-eye bi-eye-slash');
+  }
+</script>
+
+<script type="text/javascript">
+  /* Open Menu */
+  $( ".open-close-btn" ).on('click touchstart', function(e) {
+    // prevent default anchor click 
+    e.preventDefault();
+    $(".overlay").toggleClass("overlay-open");
+    $("#hamburger-icon").toggleClass("hamburger-open");
+  });
+</script>
+
+<script type="text/javascript">
+$(window).on("scroll", function() {
+    if($(window).scrollTop() > 50) {
+        $(".header").addClass("active");
+    } else {
+       $(".header").removeClass("active");
+    }
+});
+</script>
+</body>
+</html>
