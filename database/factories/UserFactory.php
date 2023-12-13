@@ -11,6 +11,9 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    /**
+     * The current password being used by the factory.
+     */
     protected static ?string $password;
 
     /**
@@ -23,6 +26,7 @@ class UserFactory extends Factory
         return [
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
+            'user_type' => 'admin',
             'remember_token' => Str::random(10),
         ];
     }

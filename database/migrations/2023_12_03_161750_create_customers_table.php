@@ -17,11 +17,10 @@ return new class extends Migration
             $table->string('full_name')->unique();
             $table->date('date_of_birth');
             $table->string('address', Customer::$addressMaxLength);
-            $table->string('email')->unique();
             $table->string('phone_number', 16)->unique();
             $table->string('signature_filename')->nullable();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-
         });
     }
 
