@@ -29,8 +29,8 @@ Run the following commands
 ```
 cp .env.example .env
 composer install
+npm install
 php artisan key:generate --ansi // if this is not run automatically
-php artisan jwt:secret
 ```
 
 DB Setup
@@ -47,11 +47,4 @@ php artisan storage:link
 Run application
 ```
 php artisan serve
-```
-
-Go to http://127.0.0.1:8000/docs to access the API documentation
-
-If it's empty, generate the documentation with:
-```
-php artisan scribe:generate
 ```
