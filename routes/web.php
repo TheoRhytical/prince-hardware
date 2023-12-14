@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Customer\AnnouncementController;
+use App\Http\Controllers\Customer\BackupController;
+use App\Http\Controllers\Customer\CustomerHistoryController;
+use App\Http\Controllers\Customer\CustomerInfoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,14 +29,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Route::get('/profile', [ProfileController::class, 'view'])->name('profile.edit');
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/user-info', [CustomerInfoController::class, 'index'])->name('customer.index');
+    Route::get('/history', [CustomerHistoryController::class, 'index'])->name('customer.history');
+
+    Route::get('/announcement', [AnnouncementController::class, 'index'])->name('customer.announcement');
+    Route::get('/backup', [BackupController::class, 'index'])->name('customer.backup');
 });
+
+Route::get('/profile', [CustomerInfoController::class, 'view'])
+    ->middleware(['auth', 'customer'])->name('customer.profile');
+
 
 require __DIR__.'/auth.php';
