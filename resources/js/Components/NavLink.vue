@@ -1,26 +1,55 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-const props = defineProps({
-    href: {
-        type: String,
-        required: true,
-    },
-    active: {
-        type: Boolean,
-    },
-});
+watch
 
-const classes = computed(() =>
-    props.active
-        ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-        : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
-);
+const props = defineProps({
+	href: {
+		type: String,
+		required: true,
+	},
+	isActive: {
+		type: Boolean,
+	}
+})
+
+const classes = computed(() => {
+	console.log(props.isActive, route().current())
+	return props.isActive ? "link active " : "link"
+})
+		// class="link" :class="{active: isActive}"
+		// :class="classes"
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
-        <slot />
-    </Link>
+	<Link :href="href"
+		class="link"
+		:class="{active: isActive}"
+		>
+		<slot />
+	</Link>
 </template>
+
+<style scoped>
+.link {
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	margin: 0.5rem 0;
+	transition: 0.15s;
+}
+.link:first-of-type {
+	margin-top: 0;
+}
+.link:last-of-type {
+	margin-bottom: 0;
+}
+.link:hover, .link.active {
+	background-color: #fbd24f;
+	color: #0a0a0a;
+}
+.link:hover {
+	transition: 0.1s;
+}
+</style>

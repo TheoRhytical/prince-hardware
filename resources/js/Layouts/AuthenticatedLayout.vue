@@ -1,10 +1,7 @@
 <script setup>
-import { ref } from 'vue';
 import NavBar from '@/Components/NavBar.vue';
 import SideBar from '@/Components/SideBar.vue';
 import NavBarOrig from '@/Components/NavBarOrig.vue';
-
-const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
@@ -34,15 +31,19 @@ const showingNavigationDropdown = ref(false);
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(45deg, #eeb405 10%, #dc3545 100%);
+  padding: 0 2.5rem;
 }
 .main-window {
   display: grid;
   grid-template-columns: 20rem auto;
   flex: 1;
-  padding: 2.5rem 5rem;
+  padding: 0 0 2.5rem;
 }
 .content {
-  background-color: red;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 0 2rem 0.25rem rgba(0,0,0,0.2);
 }
 
 </style>

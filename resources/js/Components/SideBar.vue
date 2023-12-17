@@ -1,22 +1,57 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import NavLink from '@/Components/NavLink.vue';
+import { watchEffect, ref } from 'vue'
+import { router } from '@inertiajs/vue3';
+
+const currentRoute = ref(route().current())
+console.log('currentRoute', currentRoute.value)
+router.on('navigate', (event) => {
+  currentRoute.value = event.detail.page.url
+})
 
 const logoutHandler = () => {
 	console.log("logout")
+}
+
+const links = [
+	{
+		namedRoute: 'dashboard',
+		title: 'Dashboard',
+	},
+	{
+		namedRoute: 'customer.index',
+		title: 'User Information Management',
+	},
+	{
+		namedRoute: 'customer.history',
+		title: 'History',
+	},
+	{
+		namedRoute: 'customer.backup',
+		title: 'Data Back-up and Recovery',
+	},
+	{
+		namedRoute: 'customer.announcement',
+		title: 'Create Announcement',
+	}
+]
+
+const routeCheck = (namedRoute, currentRoute) => {
+	console.log("I just need to log this for some reason. Trust me. Don't change this", currentRoute)
+	return route().current(namedRoute)
 }
 </script>
 
 
 <template>
 	<nav>
-			<div class="link-grp">
-				<Link class="link" :href="route('dashboard')">Dashboard</Link>
-				<Link class="link" :href="route('customer.index')">User Information Management</Link>
-				<Link class="link" :href="route('customer.history')">History</Link>
-				<Link class="link" :href="route('customer.backup')">Data Back-up and Recovery</Link>
-				<Link class="link" :href="route('customer.announcement')">Create Announcement</Link>
-			</div>
-			<button @click="logoutHandler">Log out</button>
+		<div class="link-grp">
+			<NavLink v-for="link in links" :href="route(link.namedRoute)" :isActive="routeCheck(link.namedRoute, currentRoute)">
+				{{ link.title }}
+			</NavLink>
+		</div>
+		<button @click="logoutHandler">Log out</button>
 	</nav>
 </template>
 
@@ -26,26 +61,11 @@ nav {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	padding-right: 3rem;
+	padding-top: 2rem;
+	padding-right: 2.5rem;
 }
 .link-grp {
 	display: flex;
 	flex-direction: column;
-}
-.link {
-	padding: 10px 20px;
-	background-color: #007bff;
-	color: white;
-	margin: 0.5rem 0;
-}
-.link:first-of-type {
-	margin-top: 0;
-}
-.link:last-of-type {
-	margin-bottom: 0;
-}
-.link:hover {
-	background-color: #fbd24f;
-	color: #0a0a0a;
 }
 </style>

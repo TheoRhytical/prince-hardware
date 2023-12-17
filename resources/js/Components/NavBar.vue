@@ -22,7 +22,6 @@ const logoutHandler = () => {
 .navbar {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 5rem;
 	/* max-width: 100rem; */
 }
 
