@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address', Customer::$addressMaxLength);
             $table->string('phone_number', 16)->unique();
             $table->string('signature_filename')->nullable();
+            $table->enum('card_status', ['processing', 'released']);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
