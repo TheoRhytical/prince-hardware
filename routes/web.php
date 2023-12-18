@@ -40,9 +40,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/announcement', [AnnouncementController::class, 'index'])->name('customer.announcement');
     Route::get('/backup', [BackupController::class, 'index'])->name('customer.backup');
+
+    // This allows customer signatures to be private and protected with auth
+    Route::get('/images/customer_signature/{filename}', [CustomerInfoController::class, 'getSignature'])->name('customer.signature');
 });
 
-Route::get('/profile', [CustomerInfoController::class, 'view'])
+Route::get('/profile', [CustomerInfoController::class, 'profile'])
     ->middleware(['auth', 'customer'])->name('customer.profile');
 
 

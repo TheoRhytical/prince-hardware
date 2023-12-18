@@ -32,39 +32,40 @@ class CustomerFactory extends Factory
     public function configure(): static
     {
         return $this->afterMaking(function (Customer $customer) {
+            $customer->signature_filename = $customer->user_id.'-signature.png';
             // Because it's using user_id, this will only work when seeding is done right after a fresh migrtion
             // Could've used guzzlehttp to download random images instead of generating images with faker which has proven to be overly inefficient
             // Currently, this takes ~20,602s to run
-            try {
-
-                $filename = $customer->user_id.'-signature.png';
+            // TODO: change to GuzzleHttp
+            // try {
+            //     $filename = $customer->user_id.'-signature.png';
                 
-                do {
-                    $fakerImg = fake()->image(storage_path('app\\tmp'), 400, 225);
-                } while (!file_exists($fakerImg));
+            //     do {
+            //         $fakerImg = fake()->image(storage_path('app\\tmp'), 400, 225);
+            //     } while (!file_exists($fakerImg));
 
-                // dd($fakerImg);
-                $fakerImgArr = explode('\\', $fakerImg);
-                $tmpFilename = $fakerImgArr[count($fakerImgArr) - 1];
-                if ($tmpFilename === "") dd($fakerImg, Storage::allFiles(), Storage::allDirectories());
+            //     // dd($fakerImg);
+            //     $fakerImgArr = explode('\\', $fakerImg);
+            //     $tmpFilename = $fakerImgArr[count($fakerImgArr) - 1];
+            //     if ($tmpFilename === "") dd($fakerImg, Storage::allFiles(), Storage::allDirectories());
 
-                Storage::move("tmp\\$tmpFilename", "customers_signatures\\$filename");
-                $customer->signature_filename = $filename;
-                Log::info("Successful seeding with id {id}, filename {filename}, tmpFilename {tmpFilename}",
-                [
-                    'id' => $customer->user_id,
-                    'filename' => $filename,
-                    'tmpFilename' => $tmpFilename,
-                ]);
-            } catch (\Exception $e) {
-                Log::error("Error occured with id {id}, filename {filename}, tmpFilename {tmpFilename}, with error: {msg}",
-                [
-                    'id' => $customer->user_id,
-                    'filename' => $filename,
-                    'msg' => $e->getMessage()
-                ]);
-                die();
-            }
+            //     Storage::move("tmp\\$tmpFilename", "customers_signatures\\$filename");
+            //     $customer->signature_filename = $filename;
+            //     Log::info("Successful seeding with id {id}, filename {filename}, tmpFilename {tmpFilename}",
+            //     [
+            //         'id' => $customer->user_id,
+            //         'filename' => $filename,
+            //         'tmpFilename' => $tmpFilename,
+            //     ]);
+            // } catch (\Exception $e) {
+            //     Log::error("Error occured with id {id}, filename {filename}, tmpFilename {tmpFilename}, with error: {msg}",
+            //     [
+            //         'id' => $customer->user_id,
+            //         'filename' => $filename,
+            //         'msg' => $e->getMessage()
+            //     ]);
+            //     die();
+            // }
         })->afterCreating(function (Customer $customer) {
 
         });

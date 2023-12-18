@@ -2,8 +2,6 @@
 import { computed, watch } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-watch
-
 const props = defineProps({
 	href: {
 		type: String,
@@ -14,12 +12,6 @@ const props = defineProps({
 	}
 })
 
-const classes = computed(() => {
-	console.log(props.isActive, route().current())
-	return props.isActive ? "link active " : "link"
-})
-		// class="link" :class="{active: isActive}"
-		// :class="classes"
 </script>
 
 <template>
