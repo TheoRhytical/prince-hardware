@@ -14,6 +14,7 @@ This app uses
 - GD Library >= 2.0 OR Imagick PHP extension >= 6.5.7
 (GD Library is preferred since it's preinstalled with XAMPP and only requires activation in php.ini, and it meets this project's requirements)
 NOTE: Imagick PHP requires PHP 8.1 as there is no official build for PHP 8.2
+- Node >= 18.0 (for Vue3 w/ Inertia)
 
 
 ## Imagick Install (XAMPP)
