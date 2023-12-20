@@ -13,7 +13,7 @@ import '../../../css/all.min.css';
 import $ from 'jquery';
 
 
-  $(document).ready(function(){
+$(document).ready(function(){
 
     $( ".open-close-btn" ).on('click touchstart', function(e) {
         // prevent default anchor click 
@@ -31,7 +31,7 @@ import $ from 'jquery';
         }
     });
 
-  });
+});
 defineProps({
     canResetPassword: {
         type: Boolean,
@@ -42,7 +42,7 @@ defineProps({
 });
 
 const form = useForm({
-    contact: '',
+    email: '',
     password: '',
     remember: false,
 });
@@ -90,8 +90,16 @@ const submit = () => {
                     <div class="form-group">
                         <label for="contact">Phone Number or Email</label>
 
-                        <TextInput id="contact" type="text" class="form-control" v-model="form.contact" required />
-                        <InputError class="mt-2" :message="form.errors.contact" />
+                        <TextInput 
+                            id="contact" 
+                            type="text" 
+                            class="form-control" 
+                            v-model="form.email" 
+                            required 
+                            autofocus
+                            autocomplete="email"
+                        />
+                        <InputError class="mt-2" :message="form.errors.email" />
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -105,7 +113,12 @@ const submit = () => {
                         </div>
                         </div>
                     </div>
-                Forgot Password?
+                <Link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                >
+                    Forgot your password?
+                </Link>
                 <div class="block mt-4">
                         <label class="flex items-center">
                             <Checkbox name="remember" v-model:checked="form.remember" />
