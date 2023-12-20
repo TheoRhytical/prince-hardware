@@ -1,0 +1,552 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Varela+Round&family=Vujahday+Script&display=swap');
+
+* {
+    box-sizing: border-box;padding: 0;margin: 0;
+  }
+  body {
+    font-size: 16px;font-family: Tahoma;overflow-x: hidden;user-select: none;
+  }
+  [id*="col-"] {
+      float: left;transition:.5s;/*border: 1px solid red;*/
+  }
+    #col-1 {width: 8.33%;}
+    #col-2 {width: 16.66%;}
+    #col-3 {width: 25%;}
+    #col-4 {width: 33.33%;}
+    #col-5 {width: 41.66%;}
+    #col-6 {width: 50%;}
+    #col-7 {width: 58.33%;}
+    #col-8 {width: 66.66%;}
+    #col-9 {width: 75%;}
+    #col-10 {width: 83.33%;}
+    #col-11 {width: 91.66%;}
+    #col-12 {width: 100%;}
+
+/* LOGIN CSS */
+
+.header {
+    position: fixed;
+    height: 100px;
+    transition: .3s;
+    z-index: 5;
+    background: linear-gradient(1deg, #eeb405 10%, #dc3545 100%);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
+}
+.logo-head {
+    width: 135px;
+    margin-left: 43px;
+    margin-top: 7px;
+}
+.logo-link {
+  display: inline-block; 
+}
+
+.logo-head {
+  transition: transform 0.3s ease-in-out;
+}
+
+.logo-head:hover {
+  animation: pulse-grow 1s infinite;
+}
+
+@keyframes pulse-grow {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* input.search {
+    width: 100%;
+    border: none;
+    display: block;
+    padding: 16px 14px 19px 33px;
+    background-image: url(img/search.png) no-repeat 10px;
+    margin-top: 24px;
+    border-radius: 10px;
+    } */
+.search-container {
+    position: relative;
+}
+
+.search {
+    padding: 16px 29px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 25px;
+    font-family: 'Varela Round', sans-serif;
+    margin-left: 109px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 66%;
+    right: -55px;
+    transform: translateY(-50%);
+    width: 15px; 
+    height: 15px;
+    background: url('../img/search.png') center center no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+.section-3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 29px;
+}
+.home-icon{
+  width: 40px;
+  margin-left: 16px;
+}
+
+.user-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-icon {
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 100%;
+    right: 0;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+    color: #333;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.user-icon-container:hover .dropdown-content {
+    display: block;
+}
+/* .main-content{
+  height: 900px;
+  background-color: black;
+} */
+.main-content-side-nav{
+  height: 573px;
+  background: linear-gradient(177deg, #eeb405 10%, #dc3545 100%);
+}
+.main-content-body{
+  height: 900px;
+  background-color: white;
+}
+.dropdown-year{
+  text-align: center;
+  margin-top: 35px;
+}
+.dropdown-year label{
+  font-size: 25px;
+  font-family: 'Josefin Sans', sans-serif;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.5);
+}
+.dropdown-year select{
+  margin-top: 30px; 
+  padding: 12px 20px;
+  text-align: center; 
+  font-family: 'Varela Round', sans-serif;
+}
+.dropdown-year input{
+  margin-top: 30px;
+  padding: 10px 57px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Varela Round', sans-serif;
+}
+.dropdown-year input:hover{
+  background-color: #fbd24f;
+  color: black;
+}
+
+.side-img-bac{
+  opacity: .1;
+  position: absolute;
+  /* bottom: 0; */
+  width: 230px;
+  margin-top: 199px;
+  left: 0;
+  overflow: hidden;
+}
+
+.user-info button{
+  position: absolute;
+  /* text-align: center; */
+  margin-left: 58px;
+  margin-top: 84px;
+  padding: 10px 26px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Varela Round', sans-serif;
+}
+.user-info button:hover{
+  background-color: #fbd24f;
+  color: black;
+}
+
+.logout-btn button{
+  position: absolute;
+  /* text-align: center; */
+  margin-left: 58px;
+  margin-top: 394px;
+  padding: 10px 88px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Varela Round', sans-serif;
+}
+.logout-btn button:hover{
+  background-color: #fbd24f;
+  color: black;
+}
+
+/* TABLE CSS */
+
+table {
+  border-collapse: collapse;
+  width: 90%;
+  margin: 0 auto;
+  font-family: 'Varela Round', sans-serif;
+}
+
+th{
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+td{
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+#col-10.main-content-body {
+  max-height: 525px; 
+  overflow: auto; 
+}
+#data-table {
+  width: 96%; 
+}
+#pagination {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#pagination button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  transition: 0.3s ease;
+}
+#pagination button:hover{
+  background-color: #eee;
+  color: black;
+}
+#page-number{
+  float: right;
+  margin: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.update-icon {
+    cursor: pointer;
+    margin-right: 0px;
+    display: inline-block;
+}
+.delete-icon {
+    display: inline-block;
+    cursor: pointer;
+    
+}
+.print-icon {
+    display: inline-block;
+    cursor: pointer;  
+}
+.dropdown-sort{
+  float: right;
+  /* margin-right: 50px; */
+  margin: 20px 55px 20px 0;
+  font-family: 'Varela Round', sans-serif;  
+}
+.dropdown-sort select{
+  padding: 5px 10px;
+}
+.dropdown-sort input{
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  transition: 0.3s ease;
+}
+.dropdown-sort input:hover{
+  background-color: #f3dfa1;
+  color: black;
+}
+
+/* MODAL CSS */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Varela Round', sans-serif;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 63px;
+  cursor: pointer;
+  color: white;
+}
+
+.modal-content form label {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.modal-content form input[type="text"],
+.modal-content form input[type="date"], 
+.modal-content form input[type="email"],
+.modal-content form input[type="tel"],
+.modal-content form input[type="file"] {
+  width: 95%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content form button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+#confirmDelete{
+  padding: 10px;
+  border-radius: 10px;
+  background-color: red;
+  border: none;
+  font-size: 15px;
+  color: white;
+  font-family: 'Varela Round', sans-serif;
+}
+#cancelDelete{
+  padding: 10px;
+  border-radius: 10px;
+  background-color: green;
+  border: none;
+  font-size: 15px;
+  color: white;
+  font-family: 'Varela Round', sans-serif;
+} 
+.white-space h1{
+	font-family: 'Varela Round', sans-serif;
+    text-align: center;
+    font-size: 70px;
+    text-transform: uppercase;
+    margin-top: 170px;
+}
+.side-bar-menu{
+	position: relative;
+}
+.side-bar-menu ul{
+	text-align: center;
+	font-family: 'Varela Round', sans-serif;
+	list-style: none;
+
+}
+.side-bar-menu ul li{
+	padding: 10px 20px;
+	background-color: #007bff;
+	width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.side-bar-menu ul li a{
+	text-decoration: none;
+	color: white;
+}
+
+.side-bar-menu ul li:hover{
+	background-color: #fbd24f;
+}
+.side-bar-menu ul li a:hover{
+	color: black;
+}
+
+table button {
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+table button:hover {
+    background-color: #2980b9;
+}
+/* Add this CSS to style the button */
+table button {
+    padding: 8px 12px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+table button.processing {
+    background-color: #3498db;
+}
+
+table button.released {
+    background-color: #2ecc71;
+}
+
+table button:hover {
+    background-color: #2980b9;
+}
+
+.compose-form {
+        text-align: center;
+        background-color: #f0f0f0;
+        padding: 20px;
+        margin: 0 auto; 
+        width: 50%;
+        border-radius: 10px; 
+        margin-top: 50px;
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .compose-form form {
+        max-width: 400px; 
+        margin: 0 auto;
+    }
+
+    .compose-form label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .compose-form input[type="text"],
+    .compose-form input[type="submit"],
+    .compose-form textarea {
+        width: 100%;
+        padding: 19px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        font-family: 'Varela Round', sans-serif;
+        font-size: 16px;
+    }
+
+    .compose-form input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Varela Round', sans-serif;
+    }
+
+    .compose-form input[type="submit"]:hover {
+        background-color: #45a049; 
+    }
+
+.card {
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-top: 176px;
+     
+  }
+  /*.card-body:hover{
+    transform: scale(1.0);
+  }*/
+.card-body {
+    padding: 20px;
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+#backup-icon {
+    font-size: 120px;
+    opacity: .5;
+}
+
+#backup-text {
+    margin-top: 20px;
+    font-size: 30px;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.backup-container {
+    text-align: center;
+/*    margin-top: 215px;*/
+}
