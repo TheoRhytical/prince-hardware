@@ -28,6 +28,7 @@ class CustomerCollection extends ResourceCollection
                 'released'=> 'Released',
             };
             $customer['signature_filename'] = route('customer.signature', ['filename' => $customer['signature_filename']]);
+            $customer['date_of_birth'] = date('F n, Y', strtotime($customer['date_of_birth']));
         }
         return $customers;
     }
