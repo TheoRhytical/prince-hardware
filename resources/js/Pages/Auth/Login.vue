@@ -4,6 +4,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import TextInput from '@/Components/TextInput.vue';
 import NavLayout from '@/Layouts/NavLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
@@ -68,7 +69,7 @@ const submit = () => {
                 <div id="myNav" class="overlay">
                     <a href="index.html"><img src="../../../icon/home.png" style="" class="nav-head"></a>
                     <div class="nav-a-content">
-                        <a href="login.html" class="nav-link">Login</a><!---->
+                        <Link :href="route('login')" class="nav-link">Login</Link>
                         <a href="promo.html" class="nav-link">Promos</a>
                         <a href="loyalty-card.html" class="nav-link">Loyalty Card</a>
                         <a href="about.html" class="nav-link">About Us</a>

@@ -1,6 +1,7 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 
+//temporarily unused
 const logoutHandler = () => {
 	console.log("Logout")
 }
@@ -13,7 +14,10 @@ const logoutHandler = () => {
   			<img src="/assets/img/logo.png" class="logo-head" id="pulse-grow" title="Logo">
 				<!-- test -->
 		</Link>
-		<button @click="logoutHandler" type="button" class="logout-btn">Log Out</button>
+		<!-- commented by osmand
+		<button @click="logoutHandler" type="button" class="logout-btn btn btn-secondary">Log Out</button>
+		-->
+		
 	</nav>
 </template>
 
