@@ -36,9 +36,13 @@ class CustomerInfoController extends Controller
     /**
      * Provide paginated tabular data
      */
-    public function page()
+    public function page(Request $request)
     {
-        return new CustomerCollection(Customer::with('user')->paginate());
+        $request->validate([
+            'page' => 'int',
+            'items' => 'int'
+        ]);
+        return new CustomerCollection(Customer::with('user')->paginate($request?->items ?? 15));
     }
 
     /**

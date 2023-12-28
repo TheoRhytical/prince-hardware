@@ -2,14 +2,23 @@
 import NavBar from '@/Components/NavBar.vue';
 import SideBar from '@/Components/SideBar.vue';
 import NavBarOrig from '@/Components/NavBarOrig.vue';
+import { ref, watchEffect } from 'vue';
+import { useBreakpoints } from '@/Composables/WindowWidth.js';
+
+const { width, type } = useBreakpoints()
+// watchEffect(() => {
+//   console.log(width.value , type.value )
+// })
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-100 window">
     <NavBar />
     <!-- <NavBarOrig /> -->
-    <div class="main-window">
-      <SideBar />
+    <div :class="{'main-window': type === 'lg'}">
+      <!-- Show  -->
+      <SideBar v-if="type === 'lg'"/>
+
       <!-- Page Content -->
       <main class="content">
         <slot />
@@ -28,11 +37,11 @@ import NavBarOrig from '@/Components/NavBarOrig.vue';
 
 <style scoped>
 .window {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
-  background: linear-gradient(45deg, #eeb405 10%, #dc3545 100%);
   padding: 0 2.5rem;
+  background: linear-gradient(45deg, #eeb405 10%, #dc3545 100%);
 }
 .main-window {
   display: grid;

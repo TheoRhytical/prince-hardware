@@ -3,44 +3,16 @@ import { Link } from '@inertiajs/vue3';
 import NavLink from '@/Components/NavLink.vue';
 import { watchEffect, ref } from 'vue'
 import { router } from '@inertiajs/vue3';
+import { links, useCurrentRoute, routeCheck } from '@/Composables/Links.js';
 
-const currentRoute = ref(route().current())
+const currentRoute = useCurrentRoute()
 console.log('currentRoute', currentRoute.value)
-router.on('navigate', (event) => {
-  currentRoute.value = event.detail.page.url
-})
 
 const logoutHandler = () => {
 	console.log("logout")
 }
 
-const links = [
-	{
-		namedRoute: 'dashboard',
-		title: 'Dashboard',
-	},
-	{
-		namedRoute: 'customer.index',
-		title: 'User Information Management',
-	},
-	{
-		namedRoute: 'customer.history',
-		title: 'History',
-	},
-	{
-		namedRoute: 'customer.backup',
-		title: 'Data Back-up and Recovery',
-	},
-	{
-		namedRoute: 'customer.announcement',
-		title: 'Create Announcement',
-	}
-]
 
-const routeCheck = (namedRoute, currentRoute) => {
-	console.log("I just need to log this for some reason. Trust me. Don't change this", currentRoute)
-	return route().current(namedRoute)
-}
 </script>
 
 
@@ -51,7 +23,7 @@ const routeCheck = (namedRoute, currentRoute) => {
 				{{ link.title }}
 			</NavLink>
 		</div>
-		<button @click="logoutHandler">Log out</button>
+		<button @click="logoutHandler" id="log-out-btn">Log out</button>
 	</nav>
 </template>
 
@@ -60,12 +32,18 @@ const routeCheck = (namedRoute, currentRoute) => {
 nav {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	padding-top: 2rem;
 	padding-right: 2.5rem;
+	/* min-width: 20%; */
+	/* height: 100vh; */
 }
 .link-grp {
 	display: flex;
 	flex-direction: column;
+}
+
+#log-out-btn {
+	margin-top: 10rem;
 }
 </style>
