@@ -526,6 +526,15 @@ table button:hover {
     margin-top: 176px;
      
   }
+  .card2 {
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-top: 20px;
+     
+  }
   /*.card-body:hover{
     transform: scale(1.0);
   }*/

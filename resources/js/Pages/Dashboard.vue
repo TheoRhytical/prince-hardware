@@ -1,13 +1,55 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import '../../css/admin.css';
+import '../../css/bootstrap.min.css';
+import '../../css/all.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 defineOptions({ layout: AuthenticatedLayout })
 </script>
 
 
 <template>
   <Head title="Dashboard" />
-  <main>
-    <h1>You're logged in</h1>
-  </main>
+  <div class="container-fluid">
+    <div class="py-10 col-md-10">
+      <h3>Welcome, Admin!</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+				<div class="card2">
+					    <div class="card-body">
+					        <div class="backup-container">
+					            <span id="backup-icon" class="fas fa-check text-success"></span>
+					      		<div id="backup-text">Released: {data here}</div>
+					  	</div>
+					</div>
+				</div>
+		  </div>
+
+      <div class="white-space col-md-4">
+				<div class="card2">
+					    <div class="card-body">
+					        <div class="backup-container">
+					            <span id="backup-icon" class="fas fa-user text-warning"></span>
+					      		<div id="backup-text">Total Users: {data here}</div>
+					  	</div>
+					</div>
+				</div>
+		  </div>
+
+      <div class="white-space col-md-4">
+				<div class="card2">
+					    <div class="card-body">
+					        <div class="backup-container">
+					            <span id="backup-icon" class="fas fa-user-plus text-primary"></span>
+					      		<div id="backup-text">New Users: {data here}</div>
+					  	</div>
+					</div>
+				</div>
+		  </div>
+    </div>
+    
+  </div>
+
 </template>

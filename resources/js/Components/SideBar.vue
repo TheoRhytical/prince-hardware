@@ -19,11 +19,11 @@ const logoutHandler = () => {
 <template>
 	<nav>
 		<div class="link-grp">
-			<NavLink v-for="link in links" :href="route(link.namedRoute)" :isActive="routeCheck(link.namedRoute, currentRoute)">
+			<NavLink v-for="link in links" :href="route(link.namedRoute)" :isActive="routeCheck(link.namedRoute, currentRoute)" class="btn btn-primary">
 				{{ link.title }}
 			</NavLink>
 		</div>
-		<button @click="logoutHandler" id="log-out-btn">Log out</button>
+		<button @click="logoutHandler" class="btn btn-danger">Log out</button>
 	</nav>
 </template>
 
