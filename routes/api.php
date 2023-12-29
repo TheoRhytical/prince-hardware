@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\BackupController;
 use App\Http\Controllers\Customer\CustomerHistoryController;
 use App\Http\Controllers\Customer\CustomerInfoController;
 use Illuminate\Http\Request;
@@ -26,5 +27,6 @@ Route::middleware('web')->group(function () {
     ], function() {
         Route::get('/user-info', [CustomerInfoController::class, 'page']);
         Route::get('/history', [CustomerHistoryController::class, 'page']);
+        Route::post('/backup', [BackupController::class, 'download']);
     });
 });

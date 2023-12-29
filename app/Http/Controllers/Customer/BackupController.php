@@ -12,4 +12,11 @@ class BackupController extends Controller
     {
         return Inertia::render('Customer/Backup');
     }
+
+    public function download(Request $request)
+    {
+        return response()->json([
+            'message' => 'Error'
+        ], 500);
+    }
 }
