@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ref, onMounted  } from 'vue';
 
 const props = defineProps(['data'])
+
 const columns = [
 	{
 		name: 'id',
@@ -19,51 +20,18 @@ const columns = [
 		field: 'full_name',
 	},
 	{
-		name: 'date_of_birth',
-		label: 'Date of Birth',
+		name: 'registered_date',
+		label: 'Registered Date',
 		required: true,
 		sortable: true,
-		field: 'date_of_birth',
+		field: 'registered_date',
 	},
 	{
-		name: 'address',
-		label: 'Address',
+		name: 'released_date',
+		label: 'Release Date',
 		required: true,
 		sortable: true,
-		field: 'address',
-		classes: 'address-width',
-		headerClasses: 'address-width',
-	},
-	{
-		name: 'user.email',
-		label: 'Email',
-		required: true,
-		sortable: true,
-		field: row => row.user.email,
-	},
-	{
-		name: 'phone_number',
-		label: 'Phone Number',
-		required: true,
-		sortable: true,
-		field: 'phone_number',
-	},
-	{
-		name: 'signature',
-		label: 'Signature',
-		required: true,
-		sortable: true,
-		field: 'signature_filename',
-		classes: 'signature-width',
-		headerClasses: 'signature-width',
-		// format: data => `<a href='${data}'>test</a>`,
-	},
-	{
-		name: 'card_status',
-		label: 'Status',
-		required: true,
-		sortable: true,
-		field: 'card_status',
+		field: 'released_date',
 	},
 	{
 		name: "actions",
@@ -89,7 +57,7 @@ const onRequest = (args) => {
 	console.log('request', args)
 	console.log('query', searchQuery.value)
 	loading.value = true
-	axios.get('/api/customer/user-info', {
+	axios.get('/api/customer/history', {
 		params: {
 			page: args.pagination.page,
 			items: args.pagination.rowsPerPage,
@@ -137,21 +105,12 @@ onMounted(() => {
 			:wrap-cells="true"
       @request="onRequest"
 		>
-      <!-- <q-input v-model="filter" placeholder="Search" /> -->
-			<template v-slot:body-cell-signature="props">
-				<q-td :props="props">
-					<img :src="props.row.signature_filename" />
-				</q-td>
-			</template>
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props">
 					<q-btn icon="mode_edit" ></q-btn>
 					<q-btn icon="delete" ></q-btn>
 				</q-td>
 			</template>
-          <!-- <temp25rem v-slot:append>
-            <q-icon name="search" />
-          </temp25rem late> -->
 		</q-table>
 	</div>
 </template>
@@ -171,16 +130,5 @@ onMounted(() => {
 	display: flex;
 	/* flex-direction: row-reverse; */
 	max-width: 50rem;
-}
-</style>
-
-<style>
-.address-width {
-	max-width: 15rem !important;
-	/* background-color: red !important; */
-}
-
-.signature-width {
-	max-width: 10rem !important;
 }
 </style>

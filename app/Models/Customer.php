@@ -6,11 +6,12 @@ use App\Models\Traits\SearchableLocal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 class Customer extends Model
 {
-    use HasFactory, Searchable, SearchableLocal;
+    use HasFactory, Searchable, SearchableLocal, SoftDeletes;
 
     /**
     * The attributes that aren't mass assignable.
@@ -36,10 +37,15 @@ class Customer extends Model
 
     public static $searchableLocal = [
         'full_name',
-        'date_of_birth',
         'address',
         'phone_number',
-        'card_status'
+        'card_status',
+    ];
+
+    public static $searchableLocalDates = [
+        'date_of_birth',
+        'created_at',
+        'released_at',
     ];
 
     public static function getSearchableLocal()

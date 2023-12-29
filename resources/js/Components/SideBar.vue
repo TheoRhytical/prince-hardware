@@ -23,7 +23,7 @@ const logoutHandler = () => {
 				{{ link.title }}
 			</NavLink>
 		</div>
-		<button @click="logoutHandler" class="btn btn-danger">Log out</button>
+		<button @click="logoutHandler" class="btn btn-danger" id="log-out-btn">Log out</button>
 	</nav>
 </template>
 

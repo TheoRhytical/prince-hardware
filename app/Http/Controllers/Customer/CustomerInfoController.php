@@ -31,7 +31,6 @@ class CustomerInfoController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('Customer/UserInfo', [
-            // 'data' => Customer::with('user')->paginate()
             'data' => new CustomerCollection(Customer::with('user')->paginate())
         ]);
     }
@@ -46,19 +45,25 @@ class CustomerInfoController extends Controller
             'items' => 'int',
             'searchQuery' => 'string',
         ]);
-        // $customer = new Customer();
-        // dd($customer->searchLocal($request->searchQuery));
         
         if ($request?->searchQuery) {
+            $searchableFields = [
+                'id',
+                'full_name',
+                'address',
+                'phone_number',
+                'card_status'
+            ];
+            $searchableDateFields = [
+                'date_of_birth'
+            ];
             return new CustomerCollection(
-                Customer::searchLocal($request->searchQuery)
+                Customer::searchLocal($request->searchQuery, $searchableFields, $searchableDateFields)
                 ->with(['user' => function ($query) use ($request) {
-                    // $query->where();
                     foreach (User::$searchableLocal as $field) {
                         $query->orWhere($field, 'LIKE', "%$request->searchQuery%");
                     }
                 }])
-                // ->ddRawSql()
                 ->paginate($request?->items ?? 15)
             );
         }

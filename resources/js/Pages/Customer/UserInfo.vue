@@ -5,23 +5,13 @@ import axios from 'axios';
 import { reactive } from 'vue';
 import UserInfoQuasarTable from '@/Components/UserInfoQuasarTable.vue';
 
-
 defineOptions({ layout: AuthenticatedLayout });
 const props = defineProps(['data']);
-// console.log('data', props.data)
-
-axios.get('/api/customer/user-info')
-	.then((res) => {
-		console.log('axios', res)
-	});
-
-
 </script>
 
 <template>
 	<Head title="User Info" />
-	<main>
-		<h1>User Info</h1>
+	<main style="padding: 2rem 1rem">
 		<UserInfoQuasarTable :data="data" />
 		<!-- {{ props.data.data }} -->
 

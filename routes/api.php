@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Customer\CustomerHistoryController;
 use App\Http\Controllers\Customer\CustomerInfoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('web')->group(function () {
     Route::group([
         'prefix' => 'customer',
-        'controller' => CustomerInfoController::class,
     ], function() {
-        Route::get('/user-info', 'page');
+        Route::get('/user-info', [CustomerInfoController::class, 'page']);
+        Route::get('/history', [CustomerHistoryController::class, 'page']);
     });
 });

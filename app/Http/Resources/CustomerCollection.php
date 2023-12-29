@@ -29,6 +29,8 @@ class CustomerCollection extends ResourceCollection
             };
             $customer['signature_filename'] = route('customer.signature', ['filename' => $customer['signature_filename']]);
             $customer['date_of_birth'] = date('F n, Y', strtotime($customer['date_of_birth']));
+            $customer['registered_date'] = date('F n, Y', strtotime($customer['created_at']));
+            $customer['released_date'] = ($customer['released_at']) ? date('F n, Y', strtotime($customer['released_at'])) : 'Processing';
         }
         return $customers;
     }
