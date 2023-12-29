@@ -83,13 +83,17 @@ const pagination = ref({
   rowsNumber: props.data.meta.total
 })
 
+const searchQuery = ref('')
+
 const onRequest = (args) => {
 	console.log('request', args)
+	console.log('query', searchQuery.value)
 	loading.value = true
 	axios.get('/api/customer/user-info', {
 		params: {
 			page: args.pagination.page,
 			items: args.pagination.rowsPerPage,
+			...(searchQuery.value && {searchQuery: searchQuery.value ?? ''})
 		}
 	})
 	.then((res) => {
@@ -103,7 +107,7 @@ const onRequest = (args) => {
 }
 
 const searchRequest = () => {
-
+	tableRef.value.requestServerInteraction();
 }
 
 onMounted(() => {
@@ -116,11 +120,11 @@ onMounted(() => {
 	<div>
 		<div class="search-container">
 			<form class="search-group">
-				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<input v-model="searchQuery" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 				<button @click.prevent="searchRequest" class="btn btn-outline-success" type="submit">Search</button>
 			</form>
 		</div>
-			<q-table
+		<q-table
 			flat bordered
       ref="tableRef"
       :rows="rows"
@@ -133,18 +137,18 @@ onMounted(() => {
 			:wrap-cells="true"
       @request="onRequest"
 		>
-        <q-input v-model="filter" placeholder="Search" />
-				<template v-slot:body-cell-signature="props">
-					<q-td :props="props">
-						<img :src="props.row.signature_filename" />
-					</q-td>
-				</template>
-				<template v-slot:body-cell-actions="props">
-					<q-td :props="props">
-						<q-btn icon="mode_edit" ></q-btn>
-						<q-btn icon="delete" ></q-btn>
-					</q-td>
-				</template>
+      <q-input v-model="filter" placeholder="Search" />
+			<template v-slot:body-cell-signature="props">
+				<q-td :props="props">
+					<img :src="props.row.signature_filename" />
+				</q-td>
+			</template>
+			<template v-slot:body-cell-actions="props">
+				<q-td :props="props">
+					<q-btn icon="mode_edit" ></q-btn>
+					<q-btn icon="delete" ></q-btn>
+				</q-td>
+			</template>
           <!-- <temp25rem v-slot:append>
             <q-icon name="search" />
           </temp25rem late> -->
