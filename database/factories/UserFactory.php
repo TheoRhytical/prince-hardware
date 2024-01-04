@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -40,5 +42,22 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+        /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function (User $user) {
+            // ...
+        })->afterCreating(function (User $user) {
+            if ($user->user_type === 'customer') {
+                Customer::factory()->create([
+                    'full_name' => $user->full_name,
+                    'user_id' => $user->id,
+                ]);
+            }
+        });
     }
 }

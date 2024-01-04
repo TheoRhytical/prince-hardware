@@ -16,21 +16,17 @@ class CustomerSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->has(
-            Customer::factory()->state(function (array $attributes, User $user) {
-                return ['full_name' => $user->full_name];
-            })
-        )->create([
+        // Created one customer with predefined credentials for testing purposes
+        User::factory()
+        ->create([
             'user_type' => 'customer',
             'password' => Hash::make('customer123'),
             'email' => 'customer@example.com',
         ]);
 
-        User::factory()->count(499)->has(
-            Customer::factory()->state(function (array $attributes, User $user) {
-                return ['full_name' => $user->full_name];
-            })
-        )->create([
+        User::factory()
+        ->count(4)
+        ->create([
             'user_type' => 'customer',
             'password' => Hash::make('customer123')
         ]);

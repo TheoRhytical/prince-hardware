@@ -78,8 +78,8 @@ class CustomerInfoController extends Controller
      */
     public function getSignature(string $filename)
     {
-        if (Storage::missing("/customers_signatures/$filename")) abort(404);
-        return response()->file(storage_path("app/customers_signatures/$filename"));
+        if (Storage::missing("customer-signatures/$filename")) abort(404);
+        return response()->file(storage_path("app/customer-signatures/$filename"));
     }
 
 }
