@@ -11,9 +11,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Intervention\Image\ImageManager;
 
 class CustomerInfoController extends Controller
 {
@@ -22,7 +27,19 @@ class CustomerInfoController extends Controller
      */
     public function profile(Request $request): Response
     {
-        return Inertia::render('Customer/Profile');
+        $user = Auth::user();
+        // dd($user, $user->customer);
+        return Inertia::render('Customer/Profile', [
+            'full_name' => $user->full_name,
+            'date_of_birth' => date('F d, Y', strtotime($user->customer->date_of_birth)),
+            'address' => $user->customer->address,
+            'email' => $user->email,
+            'phone_number' => $user->customer->phone_number,
+            'card_status' => match($user->customer->card_status) {
+                'processing' => 'On Process',
+                'released' => 'Released',
+            }
+        ]);
     }
 
     /**
@@ -74,7 +91,83 @@ class CustomerInfoController extends Controller
     }
 
     /**
-     * Serves customer signatures
+     * Individually edit a customer's personal data
+     */
+    public function edit(Request $request): JsonResponse
+    {
+        $dataToPatch = $request->validate([
+            'id' => ['required', 'integer', 'exists:'.Customer::class],
+            'full_name' => ['string', 'max:255', 'unique:'.Customer::class],
+            'date_of_birth' => ['date'],
+            'address' => ['string', 'max:'. Customer::$addressMaxLength],
+            'email' => ['email:rfc,dns', 'unique:'.User::class],
+            'phone_number' => ['string', 'regex:/^\+63-(9\d{2})-\d{3}-\d{4}$/', 'unique:'.Customer::class],
+            'signature' => ['image'],
+        ]);
+
+        try {
+            $userFields = ['full_name', 'email'];
+            $userData = array_filter($dataToPatch, fn($key) => in_array($key, $userFields), ARRAY_FILTER_USE_KEY);
+            $customerData = array_filter($dataToPatch, fn($key) => $key !== 'email', ARRAY_FILTER_USE_KEY);
+
+            if (isset($dataToPatch['signature'])) {
+                $image = $customerData['signature'];
+
+                // Resize signature file dimensions
+                $resizedSignatureImage = ImageManager::gd()
+                    ->read($image)
+                    ->scaleDown(400, 400);
+
+                $filename = $customerData['id'] . "-signature.{$image->getClientOriginalExtension()}";
+        
+                $resizedSignatureImage->save(storage_path("app/customer-signatures/{$filename}"));
+                $customerData['signature_filename'] = $filename;
+                unset($customerData['signature']);
+            }
+
+            // dd($dataToPatch, $userData, $customerData);
+            $customer = Customer::where('id', $request->id);
+            $customer->update($customerData);
+            $customer->first()->user()->update($userData);
+            $updatedCustomer = $customer->get();
+            DB::commit();
+        } catch (\Exception|\Throwable $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            abort(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+        return response()->json([
+            'message' => 'Successfully updated customer data',
+            'customer' => (new CustomerCollection($updatedCustomer))[0],
+        ], 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer', 'exists:'.Customer::class],
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $customer = Customer::find($request->id);
+            $user = $customer->user();
+            $customer->delete();
+            $user->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            abort(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'message' => 'Successfully delete customer'
+        ], 204);
+    }
+
+    /**
+     * Serves customer signatures to admin panel
      */
     public function getSignature(string $filename)
     {
@@ -82,4 +175,15 @@ class CustomerInfoController extends Controller
         return response()->file(storage_path("app/customer-signatures/$filename"));
     }
 
+    /**
+     * Serves customer signatures to customer
+     */
+    public function customerGetSignature(Request $request)
+    {
+        $user = Auth::user();
+        $filename = $user->customer->signature_filename;
+        if (Storage::missing("customer-signatures/$filename")) abort(404);
+        return response()->file(storage_path("app/customer-signatures/$filename"));
+    }
+    
 }
