@@ -107,7 +107,7 @@ $(document).ready(function (){
 				By registering, you acknowledge and accept these terms and conditions.
       </label>
       <div class="modal-footer">
-        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        	<button type="button" class="btn btn-danger" data-dismiss="modal" @click="closeModal">Close</button>
 				<Link 
 					:href="route('register')"
 					as="button"
