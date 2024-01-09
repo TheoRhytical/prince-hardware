@@ -48,7 +48,7 @@ class CustomerInfoController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('Customer/UserInfo', [
-            'data' => new CustomerCollection(Customer::with('user')->paginate())
+            'data' => new CustomerCollection(Customer::orderBy('id')->with('user')->paginate())
         ]);
     }
 
@@ -65,7 +65,7 @@ class CustomerInfoController extends Controller
         
         if ($request?->searchQuery) {
             $searchableFields = [
-                'id',
+                // 'id',
                 'full_name',
                 'address',
                 'phone_number',
@@ -81,12 +81,13 @@ class CustomerInfoController extends Controller
                         $query->orWhere($field, 'LIKE', "%$request->searchQuery%");
                     }
                 }])
+                ->orderBy('id')
                 ->paginate($request?->items ?? 15)
             );
         }
 
         return new CustomerCollection(
-            Customer::with('user')->paginate($request?->items ?? 15)
+            Customer::with('user')->orderBy('id')->paginate($request?->items ?? 15)
         );
     }
 
