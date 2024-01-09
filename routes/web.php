@@ -44,8 +44,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
 
     Route::get('/user-info', [CustomerInfoController::class, 'index'])->name('customer.index');
-    Route::post('/user-info', [CustomerInfoController::class, 'edit'])->name('customer.edit');
-    Route::delete('/user-info', [CustomerInfoController::class, 'delete'])->name('customer.delete');
 
     Route::get('/history', [CustomerHistoryController::class, 'index'])->name('customer.history');
 

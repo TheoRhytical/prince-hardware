@@ -28,5 +28,8 @@ Route::middleware('web')->group(function () {
         Route::get('/user-info', [CustomerInfoController::class, 'page']);
         Route::get('/history', [CustomerHistoryController::class, 'page']);
         Route::post('/backup', [BackupController::class, 'download']);
+
+        Route::post('/user-info', [CustomerInfoController::class, 'edit'])->name('customer.edit');
+        Route::delete('/user-info', [CustomerInfoController::class, 'delete'])->name('customer.delete');
     });
 });
