@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6cc518301d14270c54f87f5da4a53cc3",
+    "content-hash": "01e96abe45ba7dd74ad76fd079bae31b",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -1394,16 +1394,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "3.0.2",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "ac9734129478be387c1914f1c2856d623341128c"
+                "reference": "3f96a8f752f4db17cde0a152891bc332ea9aa28d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/ac9734129478be387c1914f1c2856d623341128c",
-                "reference": "ac9734129478be387c1914f1c2856d623341128c",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/3f96a8f752f4db17cde0a152891bc332ea9aa28d",
+                "reference": "3f96a8f752f4db17cde0a152891bc332ea9aa28d",
                 "shasum": ""
             },
             "require": {
@@ -1445,7 +1445,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/3.0.2"
+                "source": "https://github.com/Intervention/image/tree/3.2.1"
             },
             "funding": [
                 {
@@ -1457,7 +1457,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-12-14T13:17:13+00:00"
+            "time": "2023-12-30T20:10:28+00:00"
         },
         {
             "name": "laravel/framework",
