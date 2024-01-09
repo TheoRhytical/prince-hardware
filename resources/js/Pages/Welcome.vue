@@ -2,6 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import '../../css/mystyle.css';
 import '../../css/bootstrap.min.css';
+// import '#/scss/styles.scss'
+// import * as bootstrap from 'bootstrap'
 import $ from 'jquery';
 import Modal from '@/Components/Modal.vue';
 import IndexNav from '@/Components/IndexNav.vue';
