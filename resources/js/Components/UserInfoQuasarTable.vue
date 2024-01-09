@@ -1,8 +1,11 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted  } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps(['data'])
+
+// User info table
 const columns = [
 	{
 		name: 'id',
@@ -23,7 +26,7 @@ const columns = [
 		label: 'Date of Birth',
 		required: true,
 		sortable: true,
-		field: 'date_of_birth',
+		field: 'date_of_birth_formatted',
 	},
 	{
 		name: 'address',
@@ -56,7 +59,6 @@ const columns = [
 		field: 'signature_filename',
 		classes: 'signature-width',
 		headerClasses: 'signature-width',
-		// format: data => `<a href='${data}'>test</a>`,
 	},
 	{
 		name: 'card_status',
@@ -83,8 +85,6 @@ const pagination = ref({
   rowsNumber: props.data.meta.total
 })
 
-const searchQuery = ref('')
-
 const onRequest = (args) => {
 	console.log('request', args)
 	console.log('query', searchQuery.value)
@@ -106,18 +106,189 @@ const onRequest = (args) => {
 	});
 }
 
+// Setup
+onMounted(() => {
+	tableRef.value.requestServerInteraction();
+});
+
+// Search feature
+const searchQuery = ref('')
 const searchRequest = () => {
 	tableRef.value.requestServerInteraction();
 }
 
-onMounted(() => {
-	tableRef.value.requestServerInteraction();
-});
+// Preview uploaded signature
+import { signatureImgUrl, fileSignatureSelect } from '@/Composables/CustomerForms.js'
+import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
+
+// Edit Customer
+import { getModifiedInput } from '@/Composables/CustomerForms.js';
+
+const editModalVisible = ref(false)
+let customerData = reactive({
+	'id': null,
+  'full_name': null,
+  'date_of_birth': null,
+  'address': null,
+  'email': null,
+  'phone_number': null,
+  'signature': null,
+})
+
+let unchangedCustomerData;
+const editBtn = (row) => {
+	unchangedCustomerData = {
+		'id': row.id,
+  	'full_name': row.full_name,
+  	'date_of_birth': row.date_of_birth,
+  	'address': row.address,
+  	'email': row.user.email,
+  	'phone_number': row.phone_number,
+  	'signature': null,
+	}
+	customerData = reactive(structuredClone(unchangedCustomerData))
+	signatureImgUrl.value = row.signature_filename
+	console.log("Edit", row, row.id)
+	editModalVisible.value = true
+}
+const editErrorMessage = ref('')
+const editSubmitting = ref(false)
+const debugMessage = ref('')
+const editCustomer = () => {
+	editSubmitting.value = true
+	let modifiedInput
+	try {
+		modifiedInput = getModifiedInput(unchangedCustomerData, customerData)
+	} catch (error) {
+		editErrorMessage.value = error.message
+	}
+	console.log('new data', modifiedInput)
+	axios.post(route('customer.edit'), modifiedInput,
+		{
+			...(modifiedInput.signature && 
+			{ headers: {'Content-Type': 'multipart/form-data'} }
+			)
+		},
+	)
+	.then(res => {
+		console.log('Success', res)
+		// debugMessage.value = ''
+		rows.value.forEach(customer => {
+			if (customer.id === customerData.id) {
+				customer = res.data.customer
+			}
+		});
+	})
+	.catch(err => {
+		console.log('Error', err)
+		debugMessage.value = err.response.data
+	})
+	.finally(() => {
+		editSubmitting.value = false
+	})
+}
+
+
+// Delete customer
+const deleteModalVisible = ref(false)
+let toDeleteId
+const deleteBtn = (row) => {
+	toDeleteId = row.id
+	deleteModalVisible.value = true
+}
 
 </script>
 
 <template>
 	<div>
+
+    <Modal
+			:show="editModalVisible" 
+			max-width='md' 
+			@close="editModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span class="close" id="closeUpdateModal">&times;</span>
+				<form 
+					id="updateRecordForm"
+					@submit.prevent="editCustomer"
+				>
+					<div v-if="editErrorMessage" class="alert alert-danger" role="alert">
+						{{ editErrorMessage }}
+					</div>
+
+					<!-- <h4>Update Record</h4> -->
+					<label for="updateName">Full Name:</label>
+					<input 
+						v-model="customerData.full_name"
+						type="text" 
+						id="updateName" 
+					/>
+					<br>
+
+					<label for="dateOfBirth">Date of Birth:</label>
+					<input 
+						v-model="customerData.date_of_birth"
+						type="date" 
+						id="dateOfBirth" 
+					/>
+					<br>
+
+					<label for="address">Address:</label>
+					<input 
+						v-model="customerData.address"
+						type="text" 
+						id="address" 
+					/>
+					<br>
+
+					<label for="email">Email:</label>
+					<input 
+						v-model="customerData.email"
+						type="email" 
+						id="email" 
+					/>
+					<br>
+
+					<label for="phone">Phone Number:</label>
+      		<PhoneNumInputMask
+						:model-value="customerData.phone_number"
+        		@update:model-value="(newValue) => customerData.phone_number = newValue"
+        		input-class="reg-input"
+      		/>
+
+					<label for="signature">Signature (image):</label>
+					<input 
+        		@input="customerData.signature = $event.target.files[0]"
+						type="file" 
+						id="signature" 
+						accept="image/*" 
+        		@change="fileSignatureSelect($event, customerData.signature)"
+					/>
+					<br>
+      		<img v-if="signatureImgUrl" :src="signatureImgUrl" />
+
+					<button type="submit" :disabled="editSubmitting">{{ editSubmitting ? 'Updating... ' : 'Update' }}</button>
+				</form>
+			</div>
+		</Modal>
+
+
+  	<Modal
+			:show="deleteModalVisible" 
+			max-width='md' 
+			@close="deleteModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span class="close" id="closeDeleteModal">&times;</span>
+				<p>Are you sure you want to delete this record?</p>
+				<button id="confirmDelete">YES</button>
+				<button id="cancelDelete">NO</button>
+			</div>
+		</Modal>
+
 		<div class="search-container">
 			<form class="search-group">
 				<input v-model="searchQuery" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -145,13 +316,11 @@ onMounted(() => {
 			</template>
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props">
-					<q-btn icon="mode_edit" ></q-btn>
-					<q-btn icon="delete" ></q-btn>
+					<q-btn icon="mode_edit" @click="editBtn(props.row)"></q-btn>
+					<q-btn icon="delete" @click="deleteBtn(props.row)"></q-btn>
 				</q-td>
 			</template>
-          <!-- <temp25rem v-slot:append>
-            <q-icon name="search" />
-          </temp25rem late> -->
+
 		</q-table>
 	</div>
 </template>
@@ -169,7 +338,6 @@ onMounted(() => {
 }
 .search-group {
 	display: flex;
-	/* flex-direction: row-reverse; */
 	max-width: 50rem;
 }
 </style>
@@ -177,10 +345,12 @@ onMounted(() => {
 <style>
 .address-width {
 	max-width: 15rem !important;
-	/* background-color: red !important; */
 }
 
 .signature-width {
 	max-width: 10rem !important;
+}
+
+.edit-modal {
 }
 </style>
