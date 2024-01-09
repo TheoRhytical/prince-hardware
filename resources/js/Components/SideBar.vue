@@ -1,17 +1,10 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import NavLink from '@/Components/NavLink.vue';
-import { watchEffect, ref } from 'vue'
-import { router } from '@inertiajs/vue3';
 import { links, useCurrentRoute, routeCheck } from '@/Composables/Links.js';
 
 const currentRoute = useCurrentRoute()
 console.log('currentRoute', currentRoute.value)
-
-const logoutHandler = () => {
-	console.log("logout")
-}
-
 
 </script>
 
@@ -23,7 +16,15 @@ const logoutHandler = () => {
 				{{ link.title }}
 			</NavLink>
 		</div>
-		<button @click="logoutHandler" class="btn btn-danger" id="log-out-btn">Log out</button>
+		<Link 
+			:href="route('logout')" 
+			method="post" 
+			as="button"
+			class="btn btn-danger" 
+			id="log-out-btn"
+		>
+			Log out
+		</Link>
 	</nav>
 </template>
 
