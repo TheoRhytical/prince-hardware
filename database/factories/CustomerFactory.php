@@ -33,29 +33,37 @@ class CustomerFactory extends Factory
     public function configure(): static
     {
         return $this->afterMaking(function (Customer $customer) {
-            $customer->signature_filename = $customer->user_id.'-signature.png';
+        })->afterCreating(function (Customer $customer) {
             try {
-                $filename = $customer->user_id.'-signature.jpg';
+                $filename = $customer->id.'-signature.jpg';
                 $client = new Client();
+
                 $client->request('GET', 'https://picsum.photos/400/225.jpg', [
                     'sink' => Storage::path('customer-signatures/' . $filename)
                 ]);
+
+                // $response = $client->get('https://picsum.photos/400/225.jpg', ['stream' => true]);
+                // $stream = \GuzzleHttp\Psr7\StreamWrapper::getResource($response->getBody());
+                // Storage::disk('s3')->put($filename, $stream);
+
                 $customer->signature_filename = $filename;
+                $customer->save();
                 Log::info("Successful seeding with id {id}, filename {filename}, tmpFilename {tmpFilename}",
                 [
-                    'id' => $customer->user_id,
+                    'user_id' => $customer->user_id,
+                    'customer_id' => $customer->id,
                     'filename' => $filename,
                 ]);
             } catch (\Exception $e) {
                 Log::error("Error occured with id {id}, filename {filename}, tmpFilename {tmpFilename}, with error: {msg}",
                 [
-                    'id' => $customer->user_id,
+                    'user_id' => $customer->user_id,
+                    'customer_id' => $customer->id,
                     'filename' => $filename,
                     'msg' => $e->getMessage()
                 ]);
                 die();
             }
-        })->afterCreating(function (Customer $customer) {
 
         });
     }
