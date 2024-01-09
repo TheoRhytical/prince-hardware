@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
 import Modal from '@/Components/Modal.vue';
+import '@css/bootstrap.min.css';
+// import 'resources'
+// import '@/'
 
 const props = defineProps(['data'])
 
@@ -123,6 +126,7 @@ import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
 
 // Edit Customer
 import { getModifiedInput } from '@/Composables/CustomerForms.js';
+import DeleteRecordModal from './DeleteRecordModal.vue';
 
 const editModalVisible = ref(false)
 let customerData = reactive({
@@ -136,7 +140,9 @@ let customerData = reactive({
 })
 
 let unchangedCustomerData;
+let currentRow = ref(null)
 const editBtn = (row) => {
+	currentRow.value = row
 	unchangedCustomerData = {
 		'id': row.id,
   	'full_name': row.full_name,
@@ -151,9 +157,11 @@ const editBtn = (row) => {
 	console.log("Edit", row, row.id)
 	editModalVisible.value = true
 }
+const debugMessage = ref('')
 const editErrorMessage = ref('')
 const editSubmitting = ref(false)
-const debugMessage = ref('')
+const editCustomerSuccessMessage = ref('')
+const editSuccessModalVisible = ref(false)
 const editCustomer = () => {
 	editSubmitting.value = true
 	let modifiedInput
@@ -172,57 +180,52 @@ const editCustomer = () => {
 	)
 	.then(res => {
 		console.log('Success', res)
-		// debugMessage.value = ''
-		rows.value.forEach(customer => {
-			if (customer.id === customerData.id) {
-				customer = res.data.customer
-			}
-		});
+		editCustomerSuccessMessage.value = res.data.message
+		editSuccessModalVisible.value = true
+		editModalVisible.value = false
+		if ('signature' in modifiedInput) {
+			currentRow.value.signature.src = res.data.customer.signature_filename
+		}
+		tableRef.value.requestServerInteraction();
 	})
 	.catch(err => {
 		console.log('Error', err)
-		debugMessage.value = err.response.data
+		editErrorMessage.value = err.response.data.message
+		// debugMessage.value = err.response.data
 	})
 	.finally(() => {
 		editSubmitting.value = false
 	})
 }
 
-
 // Delete customer
-const deleteModalVisible = ref(false)
-const deleteCustomerSuccessMessage = ref('')
-const deleteSuccessModalVisible = ref(false)
-let toDeleteId
+const toDeleteId = ref(null)
 const deleteBtn = (row) => {
-	toDeleteId = row.id
-	deleteModalVisible.value = true
+	toDeleteId.value = row.id
+	console.log('deleteId', toDeleteId.value)
 }
-
-const deleteCustomer = () => {
-	console.log()
-	axios.delete(route('customer.delete'), {
-		data: {
-			id: toDeleteId
-		}
-	})
-	.then(res => {
-		console.log('success', res)
-		deleteCustomerSuccessMessage.value = res.data.message
-		deleteSuccessModalVisible.value = true
-	})
-	.catch(err => {
-		console.log('error', err)
-	})
-	.finally(() => {
-		deleteModalVisible.value = false
-	})
+const deletedHandler = () => {
+	toDeleteId.value = null
+	tableRef.value.requestServerInteraction();
 }
 
 </script>
 
 <template>
 	<div>
+		<DeleteRecordModal :to-delete-id="toDeleteId" @deleted="deletedHandler"/>
+
+  	<Modal
+			:show="editSuccessModalVisible" 
+			max-width='md' 
+			@close="editSuccessModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="editSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				{{ editCustomerSuccessMessage}}
+			</div>
+		</Modal>
 
     <Modal
 			:show="editModalVisible" 
@@ -293,35 +296,6 @@ const deleteCustomer = () => {
 
 					<button type="submit" :disabled="editSubmitting">{{ editSubmitting ? 'Updating... ' : 'Update' }}</button>
 				</form>
-			</div>
-		</Modal>
-
-
-  	<Modal
-			:show="deleteModalVisible" 
-			max-width='md' 
-			@close="deleteModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span class="close" id="closeDeleteModal" @click="deleteModalVisible = false">&times;</span>
-				<p>Are you sure you want to delete this record?</p>
-				<div class="flex justify-center">
-					<button id="confirmDelete" @click="deleteCustomer">YES</button>
-					<button id="cancelDelete" @click="deleteModalVisible = false">NO</button>
-				</div>
-			</div>
-		</Modal>
-
-    <Modal
-			:show="deleteSuccessModalVisible" 
-			max-width='md' 
-			@close="deleteSuccessModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span @click="deleteSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				{{ deleteCustomerSuccessMessage}}
 			</div>
 		</Modal>
 
