@@ -1,3 +1,8 @@
+// Import our custom CSS
+// import '../scss/styles.scss'
+// Import all of Bootstrap's JS
+// import * as bootstrap from 'bootstrap'
+
 import './bootstrap';
 import '../css/app.css';
 
@@ -33,11 +38,6 @@ createInertiaApp({
         plugins: {}, // import Quasar plugins and add here
       })
       .mount(el);
-    // const app = createApp({ render: () => h(App, props) })
-    // app.config.globalProperties.$route = route
-    // app.use(plugin)
-    //   .use(ZiggyVue, Ziggy)
-    //   .mount(el);
   },
   progress: {
     color: '#4B5563',
