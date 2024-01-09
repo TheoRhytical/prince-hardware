@@ -54,8 +54,8 @@ const pagination = ref({
 const searchQuery = ref('')
 
 const onRequest = (args) => {
-	console.log('request', args)
-	console.log('query', searchQuery.value)
+	// console.log('request', args)
+	// console.log('query', searchQuery.value)
 	loading.value = true
 	axios.get('/api/customer/history', {
 		params: {
@@ -65,7 +65,7 @@ const onRequest = (args) => {
 		}
 	})
 	.then((res) => {
-		console.log('axios', res)
+		// console.log('axios', res)
 		rows.value = res.data.customers;
 		pagination.value.page = res.data.meta.current_page;
 		pagination.value.rowsPerPage = res.data.meta.per_page;
