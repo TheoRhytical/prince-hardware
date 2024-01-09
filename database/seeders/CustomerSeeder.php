@@ -25,7 +25,7 @@ class CustomerSeeder extends Seeder
         ]);
 
         User::factory()
-        ->count(4)
+        ->count(env('SEEDED_CUSTOMERS', 20) - 1)
         ->create([
             'user_type' => 'customer',
             'password' => Hash::make('customer123')
