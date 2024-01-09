@@ -2,15 +2,9 @@
 import { vMaska } from "maska"
 
 const props = defineProps({
-	'modelValue': {
-		type: String
-	},
-	'inputClass': {
-		type: String
-	},
-	'required': {
-		type: Boolean
-	}
+	modelValue: String,
+	inputClass: String,
+	required: Boolean,
 })
 const emit = defineEmits(['update:modelValue'])
 </script>
