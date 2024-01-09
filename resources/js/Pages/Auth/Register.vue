@@ -2,7 +2,9 @@
 import VisitorLayout from '@/Layouts/VisitorLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios';
-import { onMounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
+import '../../../css/bootstrap.min.css';
+// import InputError from '@/Components/InputError.vue';
 
 defineOptions({ layout: VisitorLayout });
 
@@ -21,13 +23,10 @@ const formInputs = reactive({
 })
 
 
-const formState = reactive({
-  submitting: false,
-  isPwd: true,
-  isPwdConfirm: true,
-})
+const submitting = ref(false)
 const submitRegistration = () => {
-  formState.submitting = true
+  submitting.value = true
+  // Uses axios instead of inertiajs form helper because the latter can't submit files
   axios.post('/register', 
     formInputs,
     {
@@ -45,7 +44,7 @@ const submitRegistration = () => {
     console.log('Error', err)
   })
   .finally(() => {
-    formState.submitting = false
+    submitting.value = false
   })
 }
 
@@ -54,6 +53,7 @@ import { signatureImgUrl, fileSignatureSelect } from '@/Composables/CustomerForm
 
 // Phone number masking
 import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
+import PasswordInput from '@/Components/PasswordInput.vue';
 
 </script>
 
@@ -132,41 +132,23 @@ import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
         input-class="reg-input"
       />
 
-		  <label for="password">Password:</label>
-	    <q-input 
-				v-model="formInputs.password" 
-				name="password"
-				:type="formState.isPwd ? 'password' : 'text'" 
-        class="quasar-input"
-        outlined
-        bg-color="white"
-			>
-        <template v-slot:append>
-          <q-icon
-          :name="formState.isPwd ? 'visibility_off' : 'visibility'"
-          class="cursor-pointer"
-          @click="formState.isPwd = !formState.isPwd"
-          />
-        </template>
-      </q-input>
-			
-		  <label for="confirmpass">Confirm Password:</label>
-	    <q-input 
-			  v-model="formInputs.password_confirmation" 
-			  name="password_confirmation"
-			  :type="formState.isPwdConfirm ? 'password' : 'text'"
-        class="quasar-input"
-        outlined
-        bg-color="white"
-		  >
-        <template v-slot:append>
-          <q-icon
-            :name="formState.isPwdConfirm ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="formState.isPwdConfirm = !formState.isPwdConfirm"
-          />
-        </template>
-      </q-input>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <PasswordInput 
+          :model-value="formInputs.password" 
+          @update:model-value="(newValue) => formInputs.password = newValue"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <PasswordInput 
+          :model-value="formInputs.password_confirmation" 
+          @update:model-value="(newValue) => formInputs.password_confirmation = newValue"
+          required
+        />
+      </div>
 
 		  <label for="signature">Signature:</label>
 		  <input 
@@ -182,9 +164,7 @@ import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
       {{ formInputs.progress.percentage }}%
       </progress> -->
 			
-      <!-- <button v-if="formState.submitting" disabled>Submitting...</button>
-		  <button v-else type="submit">Submit</button> -->
-		  <button type="submit" :disabled="formState.submitting">{{ formState.submitting ? 'Submitting...' : 'Submit' }}</button>
+		  <button type="submit" :disabled="submitting">{{ submitting ? 'Submitting...' : 'Submit' }}</button>
 		  <button type="button" class="cancel">Cancel</button>
 			
 		  <p>A copy of the response will be emailed to the address provided.</p>
@@ -211,6 +191,12 @@ import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
 
 
 <style scoped>
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}
+
 .form-container{
   display: flex;
   align-items: center;

@@ -13,6 +13,8 @@ import '../../../css/bootstrap.min.css';
 import '../../../css/all.min.css';
 import $ from 'jquery';
 import IndexNav from '@/Components/IndexNav.vue';
+import { ref } from 'vue';
+import PasswordInput from '@/Components/PasswordInput.vue';
 defineProps({
   canResetPassword: {
     type: Boolean,
@@ -33,6 +35,8 @@ const submit = () => {
     onFinish: () => form.reset('password'),
   });
 };
+
+const toggleViewPassword = ref(false)
 </script>
 
 <template>
@@ -55,7 +59,7 @@ const submit = () => {
             <TextInput 
               id="contact" 
               type="text" 
-              class="form-control" 
+              class="form-control"
               v-model="form.email" 
               required 
               autofocus
@@ -65,15 +69,11 @@ const submit = () => {
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <div class="input-group">
-            <TextInput type="password" class="form-control" id="password" v-model="form.password" required />
-            <InputError class="mt-2" :message="form.errors.password" />
-            <div class="input-group-append">
-              <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword()">
-              <i class="fas fa-eye"></i>
-              </span>
-            </div>
-            </div>
+            <PasswordInput 
+              :model-value="form.password" 
+              @update:model-value="(newValue) => form.password = newValue"
+              required
+            />
           </div>
         <Link
           v-if="canResetPassword"
@@ -97,4 +97,11 @@ const submit = () => {
 
 </template>
 
+<style>
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none;
+}
 
+</style>
