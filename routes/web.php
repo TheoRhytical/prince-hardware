@@ -6,6 +6,8 @@ use App\Http\Controllers\Customer\CustomerHistoryController;
 use App\Http\Controllers\Customer\CustomerInfoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,13 +23,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    $authenticated = Auth::check();
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin' => !$authenticated && Route::has('login'),
+        'canRegister' => !$authenticated && Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
+// Route::get('/testing', function() {
+//     return Inertia::render('Testing');
+// });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     // Route::get('/profile', [ProfileController::class, 'view'])->name('profile.edit');
@@ -35,18 +41,26 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+
     Route::get('/user-info', [CustomerInfoController::class, 'index'])->name('customer.index');
+    Route::post('/user-info', [CustomerInfoController::class, 'edit'])->name('customer.edit');
+    Route::delete('/user-info', [CustomerInfoController::class, 'delete'])->name('customer.delete');
+
     Route::get('/history', [CustomerHistoryController::class, 'index'])->name('customer.history');
 
     Route::get('/announcement', [AnnouncementController::class, 'index'])->name('customer.announcement');
     Route::get('/backup', [BackupController::class, 'index'])->name('customer.backup');
 
     // This allows customer signatures to be private and protected with auth
-    Route::get('/images/customer_signature/{filename}', [CustomerInfoController::class, 'getSignature'])->name('customer.signature');
+    Route::get('/images/customer_signature/{filename}', [CustomerInfoController::class, 'getSignature'])->name('admin.customer.signature');
 });
 
-Route::get('/profile', [CustomerInfoController::class, 'profile'])
-    ->middleware(['auth', 'customer'])->name('customer.profile');
+Route::middleware(['auth', 'customer'])->group(function () {
 
+    Route::get('/profile', [CustomerInfoController::class, 'profile'])
+        ->name('customer.profile');
+    Route::get('/signature', [CustomerInfoController::class, 'customerGetSignature'])
+        ->name('customer.signature');
+});
 
 require __DIR__.'/auth.php';
