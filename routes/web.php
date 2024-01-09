@@ -27,6 +27,7 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => !$authenticated && Route::has('login'),
         'canRegister' => !$authenticated && Route::has('register'),
+        'userType' => $authenticated ? Auth::user()->user_type : '',
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);

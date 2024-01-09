@@ -26,6 +26,18 @@ const logoutHandler = () => {
 							</NavLink>
 						</q-item-section>
           </q-item>
+					<q-item clickable v-close-popup>
+						<q-item-section>
+							<Link 
+								:href="route('logout')" 
+								method="post" 
+								as="button"
+								class="btn btn-danger" 
+							>
+								Log out
+							</Link>
+						</q-item-section>
+					</q-item>
         </q-list>
       </q-menu>
     </q-btn>

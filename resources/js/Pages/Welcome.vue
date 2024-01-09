@@ -17,6 +17,9 @@ const props = defineProps({
 		type: Boolean,
 		required: true,
 	},
+	'userType': {
+		type: String,
+	},
 });
 
 
@@ -45,7 +48,7 @@ $(document).ready(function (){
 
 <template>
 	<Head title="Welcome" />
-	<IndexNav :authenticated="!canLogin"/>
+	<IndexNav :authenticated="!canLogin" :user-type="userType"/>
 	
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 		<ol class="carousel-indicators">

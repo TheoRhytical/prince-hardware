@@ -6,6 +6,9 @@ const props = defineProps({
   authenticated: {
     type: Boolean,
     default: false
+  },
+  userType: {
+    type: String,
   }
 })
 
@@ -40,8 +43,19 @@ const openHamburger = () => {
         <img src="/assets/icon/home.png" class="nav-head" />
       </Link>
       <div class="nav-a-content">
-        <Link v-if="!authenticated" :href="route('login')" class="nav-link">Login</Link>
-        <Link v-else :href="route('customer.profile')" class="nav-link">Profile</Link>
+        <Link v-if="authenticated && userType === 'customer'" :href="route('customer.profile')" class="nav-link">Profile</Link>
+        <Link v-else-if="authenticated && userType === 'admin'" :href="route('dashboard')" class="nav-link">Dashboard</Link>
+        <Link 
+          v-if="authenticated"
+          class="nav-link"
+					:href="route('logout')" 
+					method="post" 
+					as="button"
+          style="width: 100%"
+        >
+          Log out
+        </Link>
+        <Link v-else :href="route('login')" class="nav-link">Login</Link>
         <a href="promo.html" class="nav-link">Promos</a>
         <a href="loyalty-card.html" class="nav-link">Loyalty Card</a>
         <a href="about.html" class="nav-link">About Us</a>
