@@ -191,10 +191,32 @@ const editCustomer = () => {
 
 // Delete customer
 const deleteModalVisible = ref(false)
+const deleteCustomerSuccessMessage = ref('')
+const deleteSuccessModalVisible = ref(false)
 let toDeleteId
 const deleteBtn = (row) => {
 	toDeleteId = row.id
 	deleteModalVisible.value = true
+}
+
+const deleteCustomer = () => {
+	console.log()
+	axios.delete(route('customer.delete'), {
+		data: {
+			id: toDeleteId
+		}
+	})
+	.then(res => {
+		console.log('success', res)
+		deleteCustomerSuccessMessage.value = res.data.message
+		deleteSuccessModalVisible.value = true
+	})
+	.catch(err => {
+		console.log('error', err)
+	})
+	.finally(() => {
+		deleteModalVisible.value = false
+	})
 }
 
 </script>
@@ -209,7 +231,7 @@ const deleteBtn = (row) => {
 			modal-class="edit-modal"
 		>
 			<div class="modal-content" style="max-width: none;">
-				<span class="close" id="closeUpdateModal">&times;</span>
+				<span class="close" id="closeUpdateModal" @click="editModalVisible = false">&times;</span>
 				<form 
 					id="updateRecordForm"
 					@submit.prevent="editCustomer"
@@ -282,10 +304,24 @@ const deleteBtn = (row) => {
 			modal-class="edit-modal"
 		>
 			<div class="modal-content" style="max-width: none;">
-				<span class="close" id="closeDeleteModal">&times;</span>
+				<span class="close" id="closeDeleteModal" @click="deleteModalVisible = false">&times;</span>
 				<p>Are you sure you want to delete this record?</p>
-				<button id="confirmDelete">YES</button>
-				<button id="cancelDelete">NO</button>
+				<div class="flex justify-center">
+					<button id="confirmDelete" @click="deleteCustomer">YES</button>
+					<button id="cancelDelete" @click="deleteModalVisible = false">NO</button>
+				</div>
+			</div>
+		</Modal>
+
+    <Modal
+			:show="deleteSuccessModalVisible" 
+			max-width='md' 
+			@close="deleteSuccessModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="deleteSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				{{ deleteCustomerSuccessMessage}}
 			</div>
 		</Modal>
 
@@ -351,6 +387,12 @@ const deleteBtn = (row) => {
 	max-width: 10rem !important;
 }
 
-.edit-modal {
+
+#confirmDelete, #cancelDelete {
+	width: 5rem;
+	margin: 0 1rem;
 }
+/* #cancelDelete {
+
+} */
 </style>

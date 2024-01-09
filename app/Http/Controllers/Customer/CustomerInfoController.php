@@ -151,9 +151,11 @@ class CustomerInfoController extends Controller
         try {
             DB::beginTransaction();
             $customer = Customer::find($request->id);
-            $user = $customer->user();
-            $customer->delete();
-            $user->delete();
+            $userId = $customer->user_id;
+            Customer::where('id', $request->id)->delete();
+            User::where('id', $userId)->delete();
+            // $user = $customer->user();
+            // $user->delete();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -162,8 +164,8 @@ class CustomerInfoController extends Controller
         }
 
         return response()->json([
-            'message' => 'Successfully delete customer'
-        ], 204);
+            'message' => 'Successfully deleted customer'
+        ], 200);
     }
 
     /**
