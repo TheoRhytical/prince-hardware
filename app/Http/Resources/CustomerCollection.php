@@ -23,12 +23,14 @@ class CustomerCollection extends ResourceCollection
     {
         $customers = parent::toArray($request);
         foreach($customers as &$customer) {
+            // $dob = $customer['date_of_birth'];
             $customer['card_status'] = match ($customer['card_status']) {
                 'processing' => 'On Process',
                 'released'=> 'Released',
             };
-            $customer['signature_filename'] = route('customer.signature', ['filename' => $customer['signature_filename']]);
-            $customer['date_of_birth'] = date('F n, Y', strtotime($customer['date_of_birth']));
+            $customer['signature_filename'] = route('admin.customer.signature', ['filename' => $customer['signature_filename']]);
+            $customer['date_of_birth_formatted'] = date('F n, Y', strtotime($customer['date_of_birth']));
+            // $customer['date_of_birth'] = date('d/m/Y', strtotime($customer['date_of_birth']));
             $customer['registered_date'] = date('F n, Y', strtotime($customer['created_at']));
             $customer['released_date'] = ($customer['released_at']) ? date('F n, Y', strtotime($customer['released_at'])) : 'Processing';
         }
