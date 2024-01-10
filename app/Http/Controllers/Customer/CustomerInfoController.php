@@ -185,6 +185,10 @@ class CustomerInfoController extends Controller
         Customer::where('id', $request->id)
         ->update([
             'card_status' => $request->card_status,
+            'released_at' => match ($request->card_status) {
+                'processing' => null,
+                'released' => \Carbon\Carbon::now(),
+            },
         ]);
 
         return response()->json([

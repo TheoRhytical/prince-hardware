@@ -17,7 +17,7 @@ class CustomerHistoryController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Customer/History', [
-            'data' => new CustomerCollection(Customer::with('user')->paginate())
+            'data' => new CustomerCollection(Customer::with('user')->orderBy('id')->paginate())
         ]);
     }
 
@@ -36,7 +36,7 @@ class CustomerHistoryController extends Controller
         
         if ($request?->searchQuery) {
             $searchableFields = [
-                'id',
+                // 'id',
                 'full_name',
             ];
             $searchableDateFields = [
@@ -46,13 +46,14 @@ class CustomerHistoryController extends Controller
             return new CustomerCollection(
                 Customer::searchLocal($request->searchQuery, $searchableFields, $searchableDateFields)
                 ->with('user')
+                ->orderBy('id')
                 // ->ddRawSql()
                 ->paginate($request?->items ?? 15)
             );
         }
 
         return new CustomerCollection(
-            Customer::with('user')->paginate($request?->items ?? 15)
+            Customer::with('user')->orderBy('id')->paginate($request?->items ?? 15)
         );
     }
 }

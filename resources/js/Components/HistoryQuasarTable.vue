@@ -1,6 +1,9 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted  } from 'vue';
+import DeleteRecordModal from './DeleteRecordModal.vue';
+import '../../css/bootstrap.min.css';
+import Modal from './Modal.vue';
 
 const props = defineProps(['data'])
 
@@ -65,7 +68,7 @@ const onRequest = (args) => {
 		}
 	})
 	.then((res) => {
-		// console.log('axios', res)
+		console.log('axios', res)
 		rows.value = res.data.customers;
 		pagination.value.page = res.data.meta.current_page;
 		pagination.value.rowsPerPage = res.data.meta.per_page;
@@ -82,10 +85,59 @@ onMounted(() => {
 	tableRef.value.requestServerInteraction();
 });
 
+// Delete customer
+const toDeleteId = ref(null)
+const deleteBtn = (row) => {
+	toDeleteId.value = row.id
+	console.log('deleteId', toDeleteId.value)
+}
+const deletedHandler = () => {
+	toDeleteId.value = null
+	tableRef.value.requestServerInteraction();
+}
+
+const updateSuccesModalVisible = ref(false)
+const updateSuccessMessage = ref('')
+const updateModalVisible = ref(false)
 </script>
 
 <template>
 	<div>
+  	<Modal
+			:show="updateSuccesModalVisible" 
+			max-width='md' 
+			@close="updateSuccesModalVisible= false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="updateSuccesModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				{{ updateSuccessMessage }}
+			</div>
+		</Modal>
+
+  	<Modal
+			:show="updateModalVisible" 
+			max-width='md' 
+			@close="updateModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="updateModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				<!-- <h4>Update Record</h4> -->
+				<label for="updateName">Full Name:</label>
+				<input type="text" id="updateName"><br>
+
+				<label for="dateregistered">Registered Date:</label>
+				<input type="date" id="dateregistered"><br>
+
+				<label for="datereleased">Released Date:</label>
+				<input type="date" id="release"><br>
+
+				<button type="submit">Update</button>
+			</div>
+		</Modal>
+
+		<DeleteRecordModal :to-delete-id="toDeleteId" @deleted="deletedHandler"/>
 		<div class="search-container">
 			<form class="search-group">
 				<input v-model="searchQuery" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -107,8 +159,8 @@ onMounted(() => {
 		>
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props">
-					<q-btn icon="mode_edit" ></q-btn>
-					<q-btn icon="delete" ></q-btn>
+					<q-btn icon="mode_edit" @click="updateModalVisible = true"></q-btn>
+					<q-btn icon="delete" @click="deleteBtn(props.row)"></q-btn>
 				</q-td>
 			</template>
 		</q-table>
@@ -130,5 +182,10 @@ onMounted(() => {
 	display: flex;
 	/* flex-direction: row-reverse; */
 	max-width: 50rem;
+}
+
+#confirmDelete, #cancelDelete {
+	width: 5rem;
+	margin: 0 1rem;
 }
 </style>

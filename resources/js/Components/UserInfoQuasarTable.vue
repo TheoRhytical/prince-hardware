@@ -2,7 +2,8 @@
 import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
 import Modal from '@/Components/Modal.vue';
-import '@css/bootstrap.min.css';
+// import '#/css/bootstrap.min.css';
+import '../../css/bootstrap.min.css';
 
 const props = defineProps(['data'])
 
@@ -267,9 +268,7 @@ const updateCardStatus = () => {
 		>
 			<div class="modal-content" style="max-width: none;">
 				<span @click="cardStatusSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				<pre>
-					{{ cardstatusSuccessMessage }}
-				</pre>
+				{{ cardstatusSuccessMessage }}
 			</div>
 		</Modal>
 
