@@ -29,7 +29,11 @@ Route::middleware('web')->group(function () {
         Route::get('/history', [CustomerHistoryController::class, 'page']);
         Route::post('/backup', [BackupController::class, 'download']);
 
-        Route::post('/user-info', [CustomerInfoController::class, 'edit'])->name('customer.edit');
-        Route::delete('/user-info', [CustomerInfoController::class, 'delete'])->name('customer.delete');
+        Route::post('/user-info', [CustomerInfoController::class, 'edit'])
+            ->name('customer.edit');
+        Route::delete('/user-info', [CustomerInfoController::class, 'delete'])
+            ->name('customer.delete');
+        Route::patch('/card-status', [CustomerInfoController::class, 'updateCardStatus'])
+            ->name('customer.card-status');
     });
 });

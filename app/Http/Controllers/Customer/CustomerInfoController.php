@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
+use App\Enums\CardStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Enum;
 use Inertia\Inertia;
 use Inertia\Response;
 use Intervention\Image\ImageManager;
@@ -166,6 +168,27 @@ class CustomerInfoController extends Controller
 
         return response()->json([
             'message' => 'Successfully deleted customer'
+        ], 200);
+    }
+
+    public function updateCardStatus(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer', 'exists:'.Customer::class],
+            'card_status' => ['required', 'string'
+            // , new Enum(CardStatus::class)
+            , 'in:released,processing'
+        ],
+        ]);
+        // dd($request);
+
+        Customer::where('id', $request->id)
+        ->update([
+            'card_status' => $request->card_status,
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully updated customer card status'
         ], 200);
     }
 

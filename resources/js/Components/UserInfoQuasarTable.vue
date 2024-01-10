@@ -3,8 +3,6 @@ import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import '@css/bootstrap.min.css';
-// import 'resources'
-// import '@/'
 
 const props = defineProps(['data'])
 
@@ -64,7 +62,7 @@ const columns = [
 		headerClasses: 'signature-width',
 	},
 	{
-		name: 'card_status',
+		name: 'card-status',
 		label: 'Status',
 		required: true,
 		sortable: true,
@@ -209,10 +207,92 @@ const deletedHandler = () => {
 	tableRef.value.requestServerInteraction();
 }
 
+// Edit Customer Card Status
+const editStatusModalVisible = ref(false)
+const currentCustomerCardStatus = ref('')
+const customerCardStatusInputs = reactive({
+	id: null,
+	card_status: null
+})
+const cardStatusSuccessModalVisible = ref(false)
+const cardstatusSuccessMessage = ref('')
+const editStatusBtn = (props, row) => {
+	editStatusModalVisible.value = true
+	currentCustomerCardStatus.value = row.card_status
+	customerCardStatusInputs.card_status = row.card_status
+	customerCardStatusInputs.id = row.id
+	console.log('status', props)
+}
+const cardStatusErrorMessage = ref('')
+const updateCardStatus = () => {
+	console.log(currentCustomerCardStatus.value, customerCardStatusInputs.card_status, currentCustomerCardStatus.value === customerCardStatusInputs.card_status)
+	const oldValue = currentCustomerCardStatus.value === "On Process" ? "processing" : "released";
+	if (oldValue === customerCardStatusInputs.card_status) {
+		cardStatusErrorMessage.value = "No value changed"
+		return
+	}
+	console.log('card status params', customerCardStatusInputs)
+	axios.patch(route('customer.card-status'), customerCardStatusInputs)
+	.then(res => {
+		console.log('card status success', res)
+		cardstatusSuccessMessage.value = res.data.message
+		editStatusModalVisible.value = false
+		cardStatusSuccessModalVisible.value = true
+		cardStatusErrorMessage.value = ''
+		tableRef.value.requestServerInteraction();
+	})
+	.catch(err => {
+		console.log('card status err', err)
+		if (err.response.status === 500) {
+			cardStatusErrorMessage.value = err.response.data
+		} else {
+			cardStatusErrorMessage.value = err.response.data.message
+		}
+	})
+	.finally(() => {
+		currentCustomerCardStatus.value = ''
+		customerCardStatusInputs.card_status = ''
+	})
+}
+
 </script>
 
 <template>
 	<div>
+  	<Modal
+			:show="cardStatusSuccessModalVisible" 
+			max-width='md' 
+			@close="cardStatusSuccessModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="cardStatusSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				<pre>
+					{{ cardstatusSuccessMessage }}
+				</pre>
+			</div>
+		</Modal>
+
+  	<Modal
+			:show="editStatusModalVisible" 
+			max-width='md' 
+			@close="editStatusModalVisible = false"
+			modal-class="edit-modal"
+		>
+			<div class="modal-content" style="max-width: none;">
+				<span @click="editStatusModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
+				<div class="alert alert-danger" v-if="cardStatusErrorMessage">{{ cardStatusErrorMessage }}</div>
+				<p>Current Status: {{ currentCustomerCardStatus }}</p>
+				<label for="newStatus">New Status:</label>
+				<select v-model="customerCardStatusInputs.card_status">
+					  <option value="released">Released</option>
+					  <option value="processing">On Process</option>
+					  <!-- Add other status options as needed -->
+				</select>
+				<button @click="updateCardStatus()">Update Status</button>
+			</div>
+		</Modal>
+	
 		<DeleteRecordModal :to-delete-id="toDeleteId" @deleted="deletedHandler"/>
 
   	<Modal
@@ -223,7 +303,7 @@ const deletedHandler = () => {
 		>
 			<div class="modal-content" style="max-width: none;">
 				<span @click="editSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				{{ editCustomerSuccessMessage}}
+				{{ editCustomerSuccessMessage }}
 			</div>
 		</Modal>
 
@@ -324,6 +404,13 @@ const deletedHandler = () => {
 					<img :src="props.row.signature_filename" />
 				</q-td>
 			</template>
+
+			<template v-slot:body-cell-card-status="props">
+				<q-td :props="props">
+					<q-btn @click="editStatusBtn(props, props.row)">{{ props.row.card_status }}</q-btn>
+				</q-td>
+			</template>
+
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props">
 					<q-btn icon="mode_edit" @click="editBtn(props.row)"></q-btn>

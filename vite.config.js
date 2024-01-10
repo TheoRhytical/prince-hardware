@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
-// import 
-// { resolve } = require('path');
 
 
 export default defineConfig({
@@ -32,5 +30,5 @@ export default defineConfig({
       '@css': './resources/css',
       '#': './resources',
     }
-  }
+  },
 });
