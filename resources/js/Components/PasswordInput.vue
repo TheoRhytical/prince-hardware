@@ -14,7 +14,7 @@ const iconClass = computed(() => toggleViewPassword.value ? 'fa-eye-slash' : 'fa
 
 
 <template>
-<div class="input-group">
+<div class="input-group password-group">
   <input
     :type="toggleViewPassword ? 'text' : 'password'" 
 
@@ -27,7 +27,7 @@ const iconClass = computed(() => toggleViewPassword.value ? 'fa-eye-slash' : 'fa
   />
   <div class="input-group-append">
     <span 
-      class="input-group-text" 
+      class="input-group-text eye" 
       style="cursor: pointer;" 
       @click="toggleViewPassword = !toggleViewPassword"
     >
@@ -36,3 +36,18 @@ const iconClass = computed(() => toggleViewPassword.value ? 'fa-eye-slash' : 'fa
   </div>
 </div>
 </template>
+
+<style scoped>
+.eye {
+  border-radius: 0 var(--bs-border-radius) var(--bs-border-radius) 0;
+  height: 100%;
+}
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear
+{
+    display: none !important;
+}
+.password-group {
+  margin-bottom: 1.5rem;
+}
+</style>

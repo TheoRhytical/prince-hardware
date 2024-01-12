@@ -10,7 +10,7 @@ const emit = defineEmits(['update:modelValue'])
 </script>
 
 <template>
-<div>
+<div style="margin-bottom: 1.5rem;">
 	<input
 		:required="required"
 		type="tel"
@@ -24,6 +24,6 @@ const emit = defineEmits(['update:modelValue'])
 		placeholder="+63-9__-___-____"
 		style="margin-bottom: 0;"
 	/>
-	<p>Ex: +63-912-345-6789</p>
+	<p style="margin-bottom: 0;">Ex: +63-912-345-6789</p>
 </div>
 </template>
