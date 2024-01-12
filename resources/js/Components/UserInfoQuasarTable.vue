@@ -2,8 +2,9 @@
 import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
 import Modal from '@/Components/Modal.vue';
-// import '#/css/bootstrap.min.css';
-import '../../css/bootstrap.min.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import EditCustomerInfoModal from '@/Components/EditCustomerInfoModal.vue'
+import DeleteRecordModal from '@/Components/DeleteRecordModal.vue';
 
 const props = defineProps(['data'])
 
@@ -70,8 +71,9 @@ const columns = [
 		field: 'card_status',
 	},
 	{
-		name: "actions",
-		label: "Action",
+		name: 'actions',
+		label: 'Action',
+		classes: 'action-col'
 	}
 ]
 
@@ -119,83 +121,8 @@ const searchRequest = () => {
 	tableRef.value.requestServerInteraction();
 }
 
-// Preview uploaded signature
-import { signatureImgUrl, fileSignatureSelect } from '@/Composables/CustomerForms.js'
-import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
-
 // Edit Customer
-import { getModifiedInput } from '@/Composables/CustomerForms.js';
-import DeleteRecordModal from './DeleteRecordModal.vue';
-
-const editModalVisible = ref(false)
-let customerData = reactive({
-	'id': null,
-  'full_name': null,
-  'date_of_birth': null,
-  'address': null,
-  'email': null,
-  'phone_number': null,
-  'signature': null,
-})
-
-let unchangedCustomerData;
-let currentRow = ref(null)
-const editBtn = (row) => {
-	currentRow.value = row
-	unchangedCustomerData = {
-		'id': row.id,
-  	'full_name': row.full_name,
-  	'date_of_birth': row.date_of_birth,
-  	'address': row.address,
-  	'email': row.user.email,
-  	'phone_number': row.phone_number,
-  	'signature': null,
-	}
-	customerData = reactive(structuredClone(unchangedCustomerData))
-	signatureImgUrl.value = row.signature_filename
-	console.log("Edit", row, row.id)
-	editModalVisible.value = true
-}
-const debugMessage = ref('')
-const editErrorMessage = ref('')
-const editSubmitting = ref(false)
-const editCustomerSuccessMessage = ref('')
-const editSuccessModalVisible = ref(false)
-const editCustomer = () => {
-	editSubmitting.value = true
-	let modifiedInput
-	try {
-		modifiedInput = getModifiedInput(unchangedCustomerData, customerData)
-	} catch (error) {
-		editErrorMessage.value = error.message
-	}
-	console.log('new data', modifiedInput)
-	axios.post(route('customer.edit'), modifiedInput,
-		{
-			...(modifiedInput.signature && 
-			{ headers: {'Content-Type': 'multipart/form-data'} }
-			)
-		},
-	)
-	.then(res => {
-		console.log('Success', res)
-		editCustomerSuccessMessage.value = res.data.message
-		editSuccessModalVisible.value = true
-		editModalVisible.value = false
-		if ('signature' in modifiedInput) {
-			currentRow.value.signature.src = res.data.customer.signature_filename
-		}
-		tableRef.value.requestServerInteraction();
-	})
-	.catch(err => {
-		console.log('Error', err)
-		editErrorMessage.value = err.response.data.message
-		// debugMessage.value = err.response.data
-	})
-	.finally(() => {
-		editSubmitting.value = false
-	})
-}
+import { openEditInfoModal } from '@/Composables/CustomerForms.js'
 
 // Delete customer
 const toDeleteId = ref(null)
@@ -267,7 +194,6 @@ const updateCardStatus = () => {
 			modal-class="edit-modal"
 		>
 			<div class="modal-content" style="max-width: none;">
-				<span @click="cardStatusSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
 				{{ cardstatusSuccessMessage }}
 			</div>
 		</Modal>
@@ -279,7 +205,6 @@ const updateCardStatus = () => {
 			modal-class="edit-modal"
 		>
 			<div class="modal-content" style="max-width: none;">
-				<span @click="editStatusModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
 				<div class="alert alert-danger" v-if="cardStatusErrorMessage">{{ cardStatusErrorMessage }}</div>
 				<p>Current Status: {{ currentCustomerCardStatus }}</p>
 				<label for="newStatus">New Status:</label>
@@ -291,92 +216,10 @@ const updateCardStatus = () => {
 				<button @click="updateCardStatus()">Update Status</button>
 			</div>
 		</Modal>
-	
+		<EditCustomerInfoModal 
+			@updated-customer="tableRef.requestServerInteraction()"
+		/>
 		<DeleteRecordModal :to-delete-id="toDeleteId" @deleted="deletedHandler"/>
-
-  	<Modal
-			:show="editSuccessModalVisible" 
-			max-width='md' 
-			@close="editSuccessModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span @click="editSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				{{ editCustomerSuccessMessage }}
-			</div>
-		</Modal>
-
-    <Modal
-			:show="editModalVisible" 
-			max-width='md' 
-			@close="editModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span class="close" id="closeUpdateModal" @click="editModalVisible = false">&times;</span>
-				<form 
-					id="updateRecordForm"
-					@submit.prevent="editCustomer"
-				>
-					<div v-if="editErrorMessage" class="alert alert-danger" role="alert">
-						{{ editErrorMessage }}
-					</div>
-
-					<!-- <h4>Update Record</h4> -->
-					<label for="updateName">Full Name:</label>
-					<input 
-						v-model="customerData.full_name"
-						type="text" 
-						id="updateName" 
-					/>
-					<br>
-
-					<label for="dateOfBirth">Date of Birth:</label>
-					<input 
-						v-model="customerData.date_of_birth"
-						type="date" 
-						id="dateOfBirth" 
-					/>
-					<br>
-
-					<label for="address">Address:</label>
-					<input 
-						v-model="customerData.address"
-						type="text" 
-						id="address" 
-					/>
-					<br>
-
-					<label for="email">Email:</label>
-					<input 
-						v-model="customerData.email"
-						type="email" 
-						id="email" 
-					/>
-					<br>
-
-					<label for="phone">Phone Number:</label>
-      		<PhoneNumInputMask
-						:model-value="customerData.phone_number"
-        		@update:model-value="(newValue) => customerData.phone_number = newValue"
-        		input-class="reg-input"
-      		/>
-
-					<label for="signature">Signature (image):</label>
-					<input 
-        		@input="customerData.signature = $event.target.files[0]"
-						type="file" 
-						id="signature" 
-						accept="image/*" 
-        		@change="fileSignatureSelect($event, customerData.signature)"
-					/>
-					<br>
-      		<img v-if="signatureImgUrl" :src="signatureImgUrl" />
-
-					<button type="submit" :disabled="editSubmitting">{{ editSubmitting ? 'Updating... ' : 'Update' }}</button>
-				</form>
-			</div>
-		</Modal>
 
 		<div class="search-container">
 			<form class="search-group">
@@ -406,20 +249,46 @@ const updateCardStatus = () => {
 
 			<template v-slot:body-cell-card-status="props">
 				<q-td :props="props">
-					<q-btn @click="editStatusBtn(props, props.row)">{{ props.row.card_status }}</q-btn>
+					<button 
+						class="bg-blue-400 rounded-md px-4 py-2 border-none text-white flex justify-center"
+						@click="editStatusBtn(props, props.row)"
+					>
+						{{ props.row.card_status }}
+					</button>
+					<!-- <q-btn @click="editStatusBtn(props, props.row)" class="bg-blue-400 rounded-md">{{ props.row.card_status }}</q-btn> -->
 				</q-td>
 			</template>
 
 			<template v-slot:body-cell-actions="props">
-				<q-td :props="props">
-					<q-btn icon="mode_edit" @click="editBtn(props.row)"></q-btn>
-					<q-btn icon="delete" @click="deleteBtn(props.row)"></q-btn>
+				<q-td :props="props" text-color="white">
+					<!-- <q-btn>
+					</q-btn>
+					<q-btn>
+					</q-btn> -->
+					<q-btn @click="openEditInfoModal(props.row)" class="edit-btn">
+    				<i class="fas fa-pen"></i>
+					</q-btn>
+					<q-btn @click="deleteBtn(props.row)" class="delete-btn">
+    				<i class="fas fa-trash"></i>
+					</q-btn>
 				</q-td>
 			</template>
 
 		</q-table>
 	</div>
 </template>
+
+<style lang="scss">
+.action-col {
+	@apply text-white;
+	.edit-btn {
+		@apply bg-blue-400 #{!important};
+	}
+	.delete-btn {
+		@apply bg-red-500 #{!important};
+	}
+}
+</style>
 
 <style scoped>
 #search {
@@ -428,14 +297,16 @@ const updateCardStatus = () => {
 	border: 0.1rem solid #D3D3D3;
 }
 .search-container {
-	display: flex;;
+	display: flex;
 	flex-direction: row-reverse;
+	margin-bottom: 0.25rem;
 	/* width: 50%; */
 }
 .search-group {
 	display: flex;
 	max-width: 50rem;
 }
+
 </style>
 
 <style>
@@ -443,10 +314,17 @@ const updateCardStatus = () => {
 	max-width: 15rem !important;
 }
 
+/* .email-width {
+	max-width: 10rem !important;
+} */
+
 .signature-width {
 	max-width: 10rem !important;
 }
 
+.signature-width > img{
+	width: 100%;
+}
 
 #confirmDelete, #cancelDelete {
 	width: 5rem;
