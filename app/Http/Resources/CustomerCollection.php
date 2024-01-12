@@ -25,7 +25,7 @@ class CustomerCollection extends ResourceCollection
         foreach($customers as &$customer) {
             $customer['card_status'] = match ($customer['card_status']) {
                 'processing' => 'On Process',
-                'released'=> 'Released',
+                'released' => 'Released',
             };
             $customer['signature_filename'] = route('admin.customer.signature', ['filename' => $customer['signature_filename']]);
             $customer['date_of_birth_formatted'] = date('F d, Y', strtotime($customer['date_of_birth']));
