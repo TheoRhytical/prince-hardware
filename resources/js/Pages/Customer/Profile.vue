@@ -57,10 +57,9 @@ $(document).ready(function(){
 });
 </script>
 
-
 <template>
 <Head title="User Dashboard" />
-<div class="body-container">
+<div class="body-container min-h-screen">
 	<IndexNav authenticated />
 	<div class="text-container">
 		<h2 class="text-center">Welcome, {{ full_name }}</h2>

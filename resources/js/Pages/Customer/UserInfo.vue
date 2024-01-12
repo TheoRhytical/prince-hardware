@@ -1,8 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import axios from 'axios';
-import { reactive } from 'vue';
 import UserInfoQuasarTable from '@/Components/UserInfoQuasarTable.vue';
 
 defineOptions({ layout: AuthenticatedLayout });
