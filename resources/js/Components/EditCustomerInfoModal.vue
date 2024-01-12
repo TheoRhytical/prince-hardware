@@ -18,20 +18,20 @@ import axios from 'axios';
 
 const emit = defineEmits(['closeModal', 'updatedCustomer'])
 
-const editSubmitting = ref(false)
+const submitting = ref(false)
 
 const editCustomerSuccessMessage = ref('')
 const editSuccessModalVisible = ref(false)
 
 const editCustomer = () => {
-	editSubmitting.value = true
+	submitting.value = true
 	let modifiedInput
 	// console.log('customerData', unchangedCustomerData, customerData)
 	try {
 		modifiedInput = getModifiedInput(unchangedCustomerData, customerData)
 	} catch (error) {
 		editErrorMessage.value = error.message
-		editSubmitting.value = false
+		submitting.value = false
 		return
 	}
 	// console.log('new data', modifiedInput)
@@ -59,7 +59,7 @@ const editCustomer = () => {
 		editErrorMessage.value = err.response.data.message
 	})
 	.finally(() => {
-		editSubmitting.value = false
+		submitting.value = false
 	})
 }
 </script>
@@ -161,10 +161,10 @@ const editCustomer = () => {
 					<div class="flex justify-center mt-3">
 						<button 
 							type="submit" 
-							:disabled="editSubmitting"
+							:disabled="submitting"
 							class="bg-blue-400 border-none rounded-md text-white py-1 px-2"
 							>
-							{{ editSubmitting ? 'Updating... ' : 'Update' }}
+							{{ submitting ? 'Updating... ' : 'Update' }}
 						</button>
 					</div>
 				</form>

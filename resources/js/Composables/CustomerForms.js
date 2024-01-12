@@ -42,7 +42,7 @@ export let unchangedCustomerData = {
   'phone_number': null,
   'signature': null,
 }
-export let customerData = reactive(unchangedCustomerData)
+export let customerData = reactive(structuredClone(unchangedCustomerData))
 export const editModalVisible = ref(false)
 export const signatureImgurl = ref(null)
 export const editErrorMessage = ref('')
