@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Customer\AnnouncementController;
 use App\Http\Controllers\Customer\BackupController;
 use App\Http\Controllers\Customer\CustomerHistoryController;
@@ -41,7 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/user-info', [CustomerInfoController::class, 'index'])->name('customer.index');
 
