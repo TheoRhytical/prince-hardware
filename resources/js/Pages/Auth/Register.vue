@@ -3,7 +3,7 @@ import VisitorLayout from '@/Layouts/VisitorLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios';
 import { reactive, ref } from 'vue';
-import '../../../css/bootstrap.min.css';
+// import '../../../css/bootstrap.min.css';
 // import InputError from '@/Components/InputError.vue';
 
 defineOptions({ layout: VisitorLayout });
@@ -17,6 +17,17 @@ const formInputs = reactive({
   'address': null,
   'email': null,
   'phone_number': '+63-9',
+  'password': null,
+  'password_confirmation': null,
+  'signature': null,
+})
+
+const formErrors = reactive({
+  'full_name': null,
+  'date_of_birth': null,
+  'address': null,
+  'email': null,
+  'phone_number': null,
   'password': null,
   'password_confirmation': null,
   'signature': null,
@@ -42,6 +53,15 @@ const submitRegistration = () => {
   })
   .catch(err => {
     console.log('Error', err)
+    if (err.response.status === 500) {
+      // Handle server error
+    } else {
+      const errors = err.response.data.errors
+      for (const field in errors) {
+        formErrors[field] = errors[field].join(' ')
+      }
+      console.log(formErrors)
+    }
   })
   .finally(() => {
     submitting.value = false
@@ -54,6 +74,7 @@ import { signatureImgUrl, fileSignatureSelect } from '@/Composables/CustomerForm
 // Phone number masking
 import PhoneNumInputMask from '@/Components/PhoneNumInputMask.vue';
 import PasswordInput from '@/Components/PasswordInput.vue';
+import InputError from '@/Components/InputError.vue';
 
 </script>
 
@@ -72,17 +93,14 @@ import PasswordInput from '@/Components/PasswordInput.vue';
         {{ successMessage }}
       </q-card-section>
 
-      <q-card-actions align="right">
-        <!-- <Link href="" -->
+      <q-card-actions align="center" style="width: 100%">
 		    <Link
 			    :href="route('customer.profile')" 
 			    as="button"
-			    class="btn btn-primary" 
+			    class="btn btn-success w-[10rem] text-white" 
 		    >
         OK
         </Link>
-
-        <!-- <q-btn flat label="OK" color="primary" v-close-popup /> -->
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -97,8 +115,9 @@ import PasswordInput from '@/Components/PasswordInput.vue';
 			class="reg-form"
       @submit.prevent="submitRegistration"
       >
-			<h3 class="text-center">Personal Information</h3>
+			<h4 class="text-center">Personal Information</h4>
 		  <label for="fullName">Full Name:</label>
+      <InputError v-if="formErrors.full_name" :message="formErrors.full_name" />
 		  <input 
         type="text" 
         id="fullName" 
@@ -106,6 +125,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       >
 
 		  <label for="dob">Date of Birth:</label>
+      <InputError v-if="formErrors.date_of_birth" :message="formErrors.date_of_birth" />
 		  <input 
         type="date" 
         id="dob" 
@@ -113,6 +133,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       >
 
 		  <label for="address">Address:</label>
+      <InputError v-if="formErrors.address" :message="formErrors.address" />
 		  <textarea 
         id="address" 
         v-model="formInputs.address" 
@@ -120,6 +141,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       ></textarea>
 
 		  <label for="email">Email:</label>
+      <InputError v-if="formErrors.email" :message="formErrors.email" />
 		  <input 
         type="email" 
         id="email" 
@@ -127,6 +149,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       >
 
 		  <label for="phone">Phone Number:</label>
+      <InputError v-if="formErrors.phone_number" :message="formErrors.phone_number" />
       <PhoneNumInputMask 
         @update:model-value="(newValue) => formInputs.phone_number = newValue"
         input-class="reg-input"
@@ -134,6 +157,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
 
       <div class="form-group">
         <label for="password">Password</label>
+        <InputError v-if="formErrors.password" :message="formErrors.password" />
         <PasswordInput 
           :model-value="formInputs.password" 
           @update:model-value="(newValue) => formInputs.password = newValue"
@@ -142,7 +166,8 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Confirm Password</label>
+        <InputError v-if="formErrors.password_confirmation" :message="formErrors.password_confirmation" />
         <PasswordInput 
           :model-value="formInputs.password_confirmation" 
           @update:model-value="(newValue) => formInputs.password_confirmation = newValue"
@@ -151,6 +176,7 @@ import PasswordInput from '@/Components/PasswordInput.vue';
       </div>
 
 		  <label for="signature">Signature:</label>
+      <InputError v-if="formErrors.signature" :message="formErrors.signature" />
 		  <input 
         type="file" 
         id="signature" 
@@ -182,20 +208,19 @@ import PasswordInput from '@/Components/PasswordInput.vue';
 {
   width: 100%;
   padding: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 1.5rem;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+/* label {
+  border-top: 2rem;
+} */
 </style>
 
 
 <style scoped>
-input[type=password]::-ms-reveal,
-input[type=password]::-ms-clear
-{
-    display: none;
-}
 
 .form-container{
   display: flex;
