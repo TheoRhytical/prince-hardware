@@ -3,7 +3,10 @@ import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import EditCustomerCardStatusModal from './EditCustomerCardStatusModal.vue';
+import { openEditStatusBtn } from '@/Composables/CustomerCardStatus.js';
 import EditCustomerInfoModal from '@/Components/EditCustomerInfoModal.vue'
+import { openEditInfoModal } from '@/Composables/CustomerForms.js'
 import DeleteRecordModal from '@/Components/DeleteRecordModal.vue';
 
 const props = defineProps(['data'])
@@ -90,8 +93,8 @@ const pagination = ref({
 })
 
 const onRequest = (args) => {
-	console.log('request', args)
-	console.log('query', searchQuery.value)
+	// console.log('request', args)
+	// console.log('query', searchQuery.value)
 	loading.value = true
 	axios.get('/api/customer/user-info', {
 		params: {
@@ -101,7 +104,7 @@ const onRequest = (args) => {
 		}
 	})
 	.then((res) => {
-		console.log('axios', res)
+		// console.log('axios', res)
 		rows.value = res.data.customers;
 		pagination.value.page = res.data.meta.current_page;
 		pagination.value.rowsPerPage = res.data.meta.per_page;
@@ -121,101 +124,25 @@ const searchRequest = () => {
 	tableRef.value.requestServerInteraction();
 }
 
-// Edit Customer
-import { openEditInfoModal } from '@/Composables/CustomerForms.js'
-
 // Delete customer
 const toDeleteId = ref(null)
 const deleteBtn = (row) => {
 	toDeleteId.value = row.id
-	console.log('deleteId', toDeleteId.value)
+	// console.log('deleteId', toDeleteId.value)
 }
 const deletedHandler = () => {
 	toDeleteId.value = null
 	tableRef.value.requestServerInteraction();
 }
 
-// Edit Customer Card Status
-const editStatusModalVisible = ref(false)
-const currentCustomerCardStatus = ref('')
-const customerCardStatusInputs = reactive({
-	id: null,
-	card_status: null
-})
-const cardStatusSuccessModalVisible = ref(false)
-const cardstatusSuccessMessage = ref('')
-const editStatusBtn = (props, row) => {
-	editStatusModalVisible.value = true
-	currentCustomerCardStatus.value = row.card_status
-	customerCardStatusInputs.card_status = row.card_status
-	customerCardStatusInputs.id = row.id
-	console.log('status', props)
-}
-const cardStatusErrorMessage = ref('')
-const updateCardStatus = () => {
-	console.log(currentCustomerCardStatus.value, customerCardStatusInputs.card_status, currentCustomerCardStatus.value === customerCardStatusInputs.card_status)
-	const oldValue = currentCustomerCardStatus.value === "On Process" ? "processing" : "released";
-	if (oldValue === customerCardStatusInputs.card_status) {
-		cardStatusErrorMessage.value = "No value changed"
-		return
-	}
-	console.log('card status params', customerCardStatusInputs)
-	axios.patch(route('customer.card-status'), customerCardStatusInputs)
-	.then(res => {
-		console.log('card status success', res)
-		cardstatusSuccessMessage.value = res.data.message
-		editStatusModalVisible.value = false
-		cardStatusSuccessModalVisible.value = true
-		cardStatusErrorMessage.value = ''
-		tableRef.value.requestServerInteraction();
-	})
-	.catch(err => {
-		console.log('card status err', err)
-		if (err.response.status === 500) {
-			cardStatusErrorMessage.value = err.response.data
-		} else {
-			cardStatusErrorMessage.value = err.response.data.message
-		}
-	})
-	.finally(() => {
-		currentCustomerCardStatus.value = ''
-		customerCardStatusInputs.card_status = ''
-	})
-}
 
 </script>
 
 <template>
 	<div>
-  	<Modal
-			:show="cardStatusSuccessModalVisible" 
-			max-width='md' 
-			@close="cardStatusSuccessModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				{{ cardstatusSuccessMessage }}
-			</div>
-		</Modal>
-
-  	<Modal
-			:show="editStatusModalVisible" 
-			max-width='md' 
-			@close="editStatusModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<div class="alert alert-danger" v-if="cardStatusErrorMessage">{{ cardStatusErrorMessage }}</div>
-				<p>Current Status: {{ currentCustomerCardStatus }}</p>
-				<label for="newStatus">New Status:</label>
-				<select v-model="customerCardStatusInputs.card_status">
-					  <option value="released">Released</option>
-					  <option value="processing">On Process</option>
-					  <!-- Add other status options as needed -->
-				</select>
-				<button @click="updateCardStatus()">Update Status</button>
-			</div>
-		</Modal>
+		<EditCustomerCardStatusModal 
+			@updated-customer-card-status="tableRef.requestServerInteraction()"
+		/>
 		<EditCustomerInfoModal 
 			@updated-customer="tableRef.requestServerInteraction()"
 		/>
@@ -251,20 +178,15 @@ const updateCardStatus = () => {
 				<q-td :props="props">
 					<button 
 						class="bg-blue-400 rounded-md px-4 py-2 border-none text-white flex justify-center"
-						@click="editStatusBtn(props, props.row)"
+						@click="openEditStatusBtn(props.row)"
 					>
 						{{ props.row.card_status }}
 					</button>
-					<!-- <q-btn @click="editStatusBtn(props, props.row)" class="bg-blue-400 rounded-md">{{ props.row.card_status }}</q-btn> -->
 				</q-td>
 			</template>
 
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props" text-color="white">
-					<!-- <q-btn>
-					</q-btn>
-					<q-btn>
-					</q-btn> -->
 					<q-btn @click="openEditInfoModal(props.row)" class="edit-btn">
     				<i class="fas fa-pen"></i>
 					</q-btn>
@@ -314,10 +236,6 @@ const updateCardStatus = () => {
 	max-width: 15rem !important;
 }
 
-/* .email-width {
-	max-width: 10rem !important;
-} */
-
 .signature-width {
 	max-width: 10rem !important;
 }
@@ -330,7 +248,4 @@ const updateCardStatus = () => {
 	width: 5rem;
 	margin: 0 1rem;
 }
-/* #cancelDelete {
-
-} */
 </style>
