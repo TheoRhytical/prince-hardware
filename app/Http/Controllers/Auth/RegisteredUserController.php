@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'full_name' => ['required', 'string', 'max:255', 'unique:'.Customer::class],
-            'date_of_birth' => ['required', 'date'],
+            'date_of_birth' => ['required', 'date', 'before:today', 'after:120 years ago'],
             'address' => ['required', 'string', 'max:'. Customer::$addressMaxLength],
             'email' => ['required', 'email:rfc,dns', 'unique:'.User::class],
             'phone_number' => ['required', 'string', 'regex:/^\+63-(9\d{2})-\d{3}-\d{4}$/', 'unique:'.Customer::class],
