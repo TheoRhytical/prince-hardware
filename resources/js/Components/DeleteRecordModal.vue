@@ -50,7 +50,6 @@ const deleteCustomer = () => {
 		modal-class="edit-modal"
 	>
 		<div class="modal-content" style="max-width: none;">
-			<span class="close" id="closeDeleteModal" @click="deleteModalVisible = false">&times;</span>
 			<p>Are you sure you want to delete this record?</p>
 			<div class="flex justify-center">
 				<button 
@@ -72,7 +71,6 @@ const deleteCustomer = () => {
 		modal-class="edit-modal"
 	>
 		<div class="modal-content" style="max-width: none;">
-			<span @click="deleteSuccessModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
 			{{ deleteCustomerSuccessMessage}}
 		</div>
 	</Modal>
