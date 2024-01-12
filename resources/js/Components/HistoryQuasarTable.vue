@@ -1,8 +1,8 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted  } from 'vue';
-import DeleteRecordModal from './DeleteRecordModal.vue';
-import '../../css/bootstrap.min.css';
+import DeleteRecordModal from '@/Components/DeleteRecordModal.vue';
+// import '../../css/bootstrap.min.css';
 import Modal from './Modal.vue';
 
 const props = defineProps(['data'])

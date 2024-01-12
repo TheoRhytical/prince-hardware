@@ -24,11 +24,4 @@ export default defineConfig({
       sassVariables: '/resources/sass/quasar-variables.sass'
     })
   ],
-  resolve: {
-    alias: {
-      '@': './resources/js',
-      '@css': './resources/css',
-      '#': './resources',
-    }
-  },
 });

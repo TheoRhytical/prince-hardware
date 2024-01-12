@@ -1,10 +1,7 @@
 // Import our custom CSS
-// import '#/scss/styles.scss'
+import '/resources/scss/styles.scss';
 // Import all of Bootstrap's JS
 // import * as bootstrap from 'bootstrap'
-
-import './bootstrap';
-import '@css/app.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
