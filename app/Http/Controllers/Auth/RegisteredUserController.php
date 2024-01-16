@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\HttpJsonResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\User;
@@ -82,7 +83,7 @@ class RegisteredUserController extends Controller
         } catch (\Exception|\Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            abort(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return HttpJsonResponse::error(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         event(new Registered($customer));

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Enums\CardStatus;
+use App\Helpers\HttpJsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
@@ -109,6 +110,7 @@ class CustomerInfoController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
             $userFields = ['full_name', 'email'];
             $userData = array_filter($dataToPatch, fn($key) => in_array($key, $userFields), ARRAY_FILTER_USE_KEY);
             $customerData = array_filter($dataToPatch, fn($key) => $key !== 'email', ARRAY_FILTER_USE_KEY);
@@ -137,7 +139,7 @@ class CustomerInfoController extends Controller
         } catch (\Exception|\Throwable $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            abort(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return HttpJsonResponse::error(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
         return response()->json([
             'message' => 'Successfully updated customer data',
@@ -163,7 +165,7 @@ class CustomerInfoController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
-            abort(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
+            return HttpJsonResponse::error(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return response()->json([
@@ -201,7 +203,8 @@ class CustomerInfoController extends Controller
      */
     public function getSignature(string $filename)
     {
-        if (Storage::missing("customer-signatures/$filename")) abort(404);
+        if (Storage::missing("customer-signatures/$filename"))
+            return HttpJsonResponse::error(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         return response()->file(storage_path("app/customer-signatures/$filename"));
     }
 
@@ -212,7 +215,8 @@ class CustomerInfoController extends Controller
     {
         $user = Auth::user();
         $filename = $user->customer->signature_filename;
-        if (Storage::missing("customer-signatures/$filename")) abort(404);
+        if (Storage::missing("customer-signatures/$filename"))
+            return HttpJsonResponse::error(HttpResponse::HTTP_INTERNAL_SERVER_ERROR);
         return response()->file(storage_path("app/customer-signatures/$filename"));
     }
     
