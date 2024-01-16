@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum CardStatus: string {
+enum CardStatusEnum: string {
     case PROCESSING = 'processing';
     case RELEASED = 'released';
 }
