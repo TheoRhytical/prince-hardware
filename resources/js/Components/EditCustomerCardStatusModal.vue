@@ -101,7 +101,7 @@ const updateCardStatus = () => {
 						<!-- Add other status options as needed -->
 					</select>
 					<button 
-						class="bg-blue-400 border-none rounded-md text-white py-2 px-3"
+						class="bg-blue-400 py-2 px-3"
 						@click="updateCardStatus()"
 						:disabled="submitting"
 					>

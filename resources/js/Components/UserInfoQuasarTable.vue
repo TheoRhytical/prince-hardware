@@ -1,9 +1,8 @@
 <script setup>
 import axios from 'axios';
-import { ref, onMounted, reactive } from 'vue';
-import Modal from '@/Components/Modal.vue';
+import { ref, onMounted } from 'vue';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import EditCustomerCardStatusModal from './EditCustomerCardStatusModal.vue';
+import EditCustomerCardStatusModal from '@/Components/EditCustomerCardStatusModal.vue';
 import { openEditStatusBtn } from '@/Composables/CustomerCardStatus.js';
 import EditCustomerInfoModal from '@/Components/EditCustomerInfoModal.vue'
 import { openEditInfoModal } from '@/Composables/CustomerForms.js'
@@ -177,7 +176,7 @@ const deletedHandler = () => {
 			<template v-slot:body-cell-card-status="props">
 				<q-td :props="props">
 					<button 
-						class="bg-blue-400 rounded-md px-4 py-2 border-none text-white flex justify-center"
+						class="bg-blue-400 px-4 py-2 flex justify-center"
 						@click="openEditStatusBtn(props.row)"
 					>
 						{{ props.row.card_status }}
@@ -202,13 +201,17 @@ const deletedHandler = () => {
 
 <style lang="scss">
 .action-col {
-	@apply text-white;
+	// @apply text-white;
 	.edit-btn {
 		@apply bg-blue-400 #{!important};
 	}
 	.delete-btn {
 		@apply bg-red-500 #{!important};
 	}
+}
+
+button {
+	@apply text-white rounded-md border-none #{!important};
 }
 </style>
 
@@ -244,8 +247,4 @@ const deletedHandler = () => {
 	width: 100%;
 }
 
-#confirmDelete, #cancelDelete {
-	width: 5rem;
-	margin: 0 1rem;
-}
 </style>

@@ -50,16 +50,23 @@ const deleteCustomer = () => {
 		modal-class="edit-modal"
 	>
 		<div class="modal-content" style="max-width: none;">
-			<p>Are you sure you want to delete this record?</p>
+			<p class="text-center">Are you sure you want to delete this record?</p>
 			<div class="flex justify-center">
-				<button 
-					:disabled="submitting"
-					id="confirmDelete" 
-					@click="deleteCustomer"
-				>
-					YES
-				</button>
-				<button id="cancelDelete" @click="deleteModalVisible = false">NO</button>
+				<div style="width: 50%" class="flex justify-evenly">
+					<button 
+						:disabled="submitting"
+						@click="deleteCustomer"
+						class="bg-blue-400"
+						>
+						YES
+					</button>
+					<button 
+						@click="deleteModalVisible = false"
+						class="bg-red-500"
+						>
+						NO
+					</button>
+				</div>
 			</div>
 		</div>
 	</Modal>
@@ -75,3 +82,9 @@ const deleteCustomer = () => {
 		</div>
 	</Modal>
 </template>
+
+<style scoped>
+button {
+	@apply py-2 px-3;
+}
+</style>

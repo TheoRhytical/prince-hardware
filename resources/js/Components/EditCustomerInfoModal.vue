@@ -162,8 +162,8 @@ const editCustomer = () => {
 						<button 
 							type="submit" 
 							:disabled="submitting"
-							class="bg-blue-400 border-none rounded-md text-white py-1 px-2"
-							>
+							class="bg-blue-400 py-1 px-2"
+						>
 							{{ submitting ? 'Updating... ' : 'Update' }}
 						</button>
 					</div>

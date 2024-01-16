@@ -37,7 +37,7 @@ const props = defineProps({
 .link:last-of-type {
 	margin-bottom: 0;
 }
-.link:hover, .link.active {
+.link:hover {
 	background-color: #fbd24f;
 	color: #0a0a0a;
 }

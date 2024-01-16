@@ -35,6 +35,6 @@ export const useCurrentRoute = () => {
 
 
 export const routeCheck = (namedRoute, currentRoute) => {
-	console.log("I just need to log this for some reason. Trust me. Don't change this", currentRoute)
+	// console.log("I just need to log this for some reason. Trust me. Don't change this", currentRoute)
 	return route().current(namedRoute)
 }

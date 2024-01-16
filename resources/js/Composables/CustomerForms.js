@@ -47,6 +47,7 @@ export const editModalVisible = ref(false)
 export const signatureImgurl = ref(null)
 export const editErrorMessage = ref('')
 export const openEditInfoModal = (row) => {
+  // Reference to current row is needed in updating image shown in table
 	currentCustomer.value = row
 	unchangedCustomerData = {
 		'id': row.id,
