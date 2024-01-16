@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->timestamp('released_at')
+            $table->timestamp('registered_at')
                 ->after('card_status')
+                ->default(\Carbon\Carbon::now()->toDateTimeString())
                 ->nullable();
-            $table->softDeletes();
         });
     }
 
@@ -25,8 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('released_at');
-            $table->dropColumn('deleted_at');
+            $table->dropColumn('registered_at');
         });
     }
 };

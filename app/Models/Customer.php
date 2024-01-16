@@ -44,7 +44,7 @@ class Customer extends Model
 
     public static $searchableLocalDates = [
         'date_of_birth',
-        'created_at',
+        'registered_at',
         'released_at',
     ];
 
