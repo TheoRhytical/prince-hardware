@@ -48,7 +48,7 @@ const onDownload = () => {
 				<div class="form-container bg-gray-100">
 					<form class="search-group flex ">
 						<input v-model="email" class="me-2 grow" placeholder="Email" aria-label="Email">
-						<button @click.prevent="onDownload" class="btn btn-outline-success" type="submit" :disabled="loading">
+						<button @click.prevent="onDownload" class="btn btn-outline-success text-black" type="submit" :disabled="loading">
 							<!-- Add loading spinner if possible -->
 							<div v-if="loading" class="spinner-border " role="status">
   							<span class="visually-hidden">Downloading...</span>

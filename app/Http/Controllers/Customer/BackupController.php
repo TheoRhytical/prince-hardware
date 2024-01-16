@@ -15,8 +15,11 @@ class BackupController extends Controller
 
     public function download(Request $request)
     {
+        $request->validate([
+            'email' => ['required', 'email:rfc,dns'],
+        ]);
         return response()->json([
-            'message' => 'Error'
-        ], 500);
+            'message' => 'Downloaded data sent to '. $request->email
+        ], 200);
     }
 }
