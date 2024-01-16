@@ -47,6 +47,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/user-info', [CustomerInfoController::class, 'index'])->name('customer.index');
 
     Route::get('/history', [CustomerHistoryController::class, 'index'])->name('customer.history');
+    Route::patch('/history', [CustomerHistoryController::class, 'update'])->name('customer.history.edit');
 
     Route::get('/announcement', [AnnouncementController::class, 'index'])->name('customer.announcement');
     Route::get('/backup', [BackupController::class, 'index'])->name('customer.backup');
@@ -61,6 +62,10 @@ Route::middleware(['auth', 'customer'])->group(function () {
         ->name('customer.profile');
     Route::get('/signature', [CustomerInfoController::class, 'customerGetSignature'])
         ->name('customer.signature');
+});
+
+Route::get('/testing', function () {
+    dd(\Carbon\Carbon::now()->toDateTimeString());
 });
 
 require __DIR__.'/auth.php';

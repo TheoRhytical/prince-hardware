@@ -4,6 +4,8 @@ import { ref, onMounted  } from 'vue';
 import DeleteRecordModal from '@/Components/DeleteRecordModal.vue';
 // import '../../css/bootstrap.min.css';
 import Modal from './Modal.vue';
+import { openUpdateHistoryModal } from '@/Composables/CustomerHistory';
+import UpdateHistoryModal from '@/Components/UpdateHistoryModal.vue';
 
 const props = defineProps(['data'])
 
@@ -37,8 +39,9 @@ const columns = [
 		field: 'released_date',
 	},
 	{
-		name: "actions",
-		label: "Action",
+		name: 'actions',
+		label: 'Action',
+		classes: 'action-col'
 	}
 ]
 
@@ -96,47 +99,11 @@ const deletedHandler = () => {
 	tableRef.value.requestServerInteraction();
 }
 
-const updateSuccesModalVisible = ref(false)
-const updateSuccessMessage = ref('')
-const updateModalVisible = ref(false)
 </script>
 
 <template>
 	<div>
-  	<Modal
-			:show="updateSuccesModalVisible" 
-			max-width='md' 
-			@close="updateSuccesModalVisible= false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span @click="updateSuccesModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				{{ updateSuccessMessage }}
-			</div>
-		</Modal>
-
-  	<Modal
-			:show="updateModalVisible" 
-			max-width='md' 
-			@close="updateModalVisible = false"
-			modal-class="edit-modal"
-		>
-			<div class="modal-content" style="max-width: none;">
-				<span @click="updateModalVisible = false" class="close" id="closeUpdateModal">&times;</span>
-				<!-- <h4>Update Record</h4> -->
-				<label for="updateName">Full Name:</label>
-				<input type="text" id="updateName"><br>
-
-				<label for="dateregistered">Registered Date:</label>
-				<input type="date" id="dateregistered"><br>
-
-				<label for="datereleased">Released Date:</label>
-				<input type="date" id="release"><br>
-
-				<button type="submit">Update</button>
-			</div>
-		</Modal>
-
+		<UpdateHistoryModal @updated-customer-history="tableRef.requestServerInteraction()" />
 		<DeleteRecordModal :to-delete-id="toDeleteId" @deleted="deletedHandler"/>
 		<div class="search-container">
 			<form class="search-group">
@@ -159,8 +126,16 @@ const updateModalVisible = ref(false)
 		>
 			<template v-slot:body-cell-actions="props">
 				<q-td :props="props">
-					<q-btn icon="mode_edit" @click="updateModalVisible = true"></q-btn>
-					<q-btn icon="delete" @click="deleteBtn(props.row)"></q-btn>
+					<q-btn 
+						icon="mode_edit" 
+						@click="openUpdateHistoryModal(props.row)"
+						class="edit-btn"
+					></q-btn>
+					<q-btn 
+						icon="delete" 
+						class="delete-btn"
+						@click="deleteBtn(props.row)"
+					></q-btn>
 				</q-td>
 			</template>
 		</q-table>
@@ -187,5 +162,21 @@ const updateModalVisible = ref(false)
 #confirmDelete, #cancelDelete {
 	width: 5rem;
 	margin: 0 1rem;
+}
+</style>
+
+<style lang="scss">
+.action-col {
+	// @apply text-white;
+	.edit-btn {
+		@apply bg-blue-400 #{!important};
+	}
+	.delete-btn {
+		@apply bg-red-500 #{!important};
+	}
+}
+
+button {
+	@apply text-white rounded-md border-none #{!important};
 }
 </style>
